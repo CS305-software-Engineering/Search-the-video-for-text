@@ -5,7 +5,7 @@ const PORT = process.env.PORT||5000;
 const path=require("path");
 const bodyParser = require("body-parser");
 const dotenv = require('dotenv');
-
+const UserWithDb = require("./server/controllers/User.js")
 
 
 dotenv.config();
@@ -24,9 +24,13 @@ if(process.env.NODE_ENV==="production"){
   app.use(express.static(path.join(__dirname,"client/build")));
 }
 console.log(__dirname);
+
+
+
+
 //ROUTES//
-
-
+app.post('/api/v1/users/login',UserWithDb.login);  // mobile_number , auth_token , user_type
+app.post('/api/v1/users/signup',UserWithDb.create);
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Search-the-video-for-text application." });
