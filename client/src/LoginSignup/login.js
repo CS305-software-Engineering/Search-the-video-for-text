@@ -19,19 +19,19 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   image: {
-    backgroundImage: 'url(https://d8it4huxumps7.cloudfront.net/uploads/images/flipkart-grid-01.jpg?d=1920x418)',
+    backgroundImage: 'url(https://pbblogassets.s3.amazonaws.com/uploads/2015/08/Audio-Waveforms-Featued-Image.jpg)',
     backgroundRepeat: 'no-repeat',
     backgroundColor: "black",
-    //backgroundSize: 'cover',
+    backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
   paper: {
-    margin: theme.spacing(8, 4),
+    margin: theme.spacing(8, 5),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     alignContent:"center",
-    marginTop: theme.spacing(40),
+    marginTop: theme.spacing(20),
   },
   avatar: {
     margin: theme.spacing(1),
@@ -88,28 +88,22 @@ export default function SignInSide() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+            <li>
+              <ReactLink to="/somepage">
 
-<li>
-<ReactLink to="/templateuploader">
-
-            <Button
-              //type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              //onClick={(e)=>console.log("Pressed submit")}
-              
-            >
-              Sign In
-            </Button>
-
-
-</ReactLink>
-</li>
-
-
-            
+                <Button
+                  //type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  //onClick={(e)=>console.log("Pressed submit")}
+                  
+                >
+                  Sign In
+                </Button>
+              </ReactLink>
+            </li>  
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
