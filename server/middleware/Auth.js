@@ -19,7 +19,7 @@ const Auth = {
     }
     try {
       const decoded = await jwt.verify(token, process.env.SECRET);
-      const text = 'SELECT * FROM users WHERE user_id = $1';
+      const text = 'SELECT * FROM users WHERE id = ($1)';
       const { rows } = await db.query(text, [decoded.userId]);
       if(!rows[0]) {
         return res.status(400).send({ 'message': 'The token you provided is invalid' });
@@ -41,7 +41,7 @@ const Auth = {
     }
     try {
       const decoded = await jwt.verify(token, process.env.SECRET);
-      const text = 'SELECT * FROM users WHERE id = $1';
+      const text = 'SELECT * FROM users WHERE id = ($1)';
       const { rows } = await db.query(text, [decoded.userId]);
       if(!rows[0] || rows[0].user_type != 'admin') {
         return res.status(400).send({ 'message': 'The token you provided is invalid or you are not admin' });

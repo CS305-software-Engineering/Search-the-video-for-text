@@ -1,5 +1,6 @@
 const moment = require('moment');
 const { uuid } = require('uuidv4');
+const { getMaxListeners } = require('../db');
 const db = require('../db');
 const Helper = require('./Helper');
 
@@ -20,7 +21,7 @@ const User = {
     }
     const hashPassword = Helper.hashPassword(req.body.password);
 
-    const createQueryUser = `INSERT INTO users(id, email, password,created_date, modified_date) VALUES($1, $2, $3, $4, $5) returning *`;
+    const createQueryUser = 'INSERT INTO users(id, email, password,created_date, modified_date) VALUES($1, $2, $3, $4, $5) returning *';
 
     const values = [
       uuid(),
@@ -58,7 +59,7 @@ const User = {
     if (!Helper.isValidEmail(req.body.email)) {
       return res.status(400).send({ 'message': 'Please enter a valid email address' });
     }
-    const text = 'SELECT * FROM users WHERE email = $1';
+    const text = 'SELECT * FROM users WHERE email = ($1)';
     try {
       const { rows } = await db.query(text, [req.body.email]);
       if (!rows[0]) {
@@ -82,7 +83,7 @@ const User = {
    * @returns {void} return status code 204 
    */
   async delete(req, res) {
-    const deleteQuery = 'DELETE FROM users WHERE id=$1 returning *';
+    const deleteQuery = 'DELETE FROM users WHERE id=($1) returning *';
     try {
       const { rows } = await db.query(deleteQuery, [req.user.id]);
       if(!rows[0]) {
@@ -90,6 +91,26 @@ const User = {
       }
       return res.status(204).send({ 'message': 'deleted' });
     } catch(error) {
+      return res.status(400).send(error);
+    }
+  },
+
+  async insert_into_history(req, res){
+    const check = 'SELECT * FROM users WHERE id = ($1)';
+    const query = 'INSERT INTO search_history(id, date_created, video_link, search_text) VALUES ($1, $2, $3, $4) returning *';
+    try{
+      const check_user = await db.query(check, [req.user.id]);
+      if(!check_user.rows[0]){
+        return res.status(404).send({'message': 'user does not exist.'});
+      }
+      console.log([req.user.id, moment(new Date()), req.body.video_link, req.body.search_text]);
+      const {rows} = await db.query(query, [req.user.id, moment(new Date()), req.body.video_link, req.body.search_text]);
+      console.log(rows);
+      if(!rows[0]){
+        return res.status(404).send({'message': 'Could not insert into database'});
+      }
+      return res.status(200).send(rows[0]);
+    }catch(error){
       return res.status(400).send(error);
     }
   }

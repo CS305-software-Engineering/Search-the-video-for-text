@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS search_history;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE IF NOT EXISTS
@@ -8,5 +9,13 @@ CREATE TABLE IF NOT EXISTS
         created_date TIMESTAMP,
         modified_date TIMESTAMP
     );
-	
-SELECT * from users;
+
+CREATE TABLE IF NOT EXISTS
+    search_history(
+        id VARCHAR(256),
+        date_created TIMESTAMP,
+        video_link VARCHAR(256) NOT NULL,
+        search_text VARCHAR(256) NOT NULL,
+        PRIMARY KEY(id, date_created, video_link),
+        FOREIGN KEY(id) REFERENCES users(id) ON DELETE CASCADE
+    );
