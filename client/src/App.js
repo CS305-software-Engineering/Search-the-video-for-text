@@ -6,6 +6,7 @@ import SignInSide from "./LoginSignup/login.js"
 const App = () => {
   return (
   <Router >
+    
     <Route exact path="/" component={SignInSide} /> 
   </Router>
 )
