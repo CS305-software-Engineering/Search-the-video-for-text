@@ -89,7 +89,7 @@ export default function SignInSide() {
               label="Remember me"
             />
             <li>
-              <ReactLink to="/somepage">
+              <ReactLink to="/home">
 
                 <Button
                   //type="submit"
