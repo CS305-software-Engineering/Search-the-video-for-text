@@ -4,10 +4,10 @@ const db = require('../db');
 const Auth = {
   /**
    * Verify Token
-   * @param {object} req 
-   * @param {object} res 
+   * @param {object} req
+   * @param {object} res
    * @param {object} next
-   * @returns {object|void} response object 
+   * @returns {object|void} response object
    */
   async verifyToken(req, res, next) {
     console.log(req.body)
