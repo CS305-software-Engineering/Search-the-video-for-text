@@ -19,6 +19,30 @@ const speech = new Speech({
 
 
 
+//split phrase into chunks with max limit 90
+function splitPhrases(phrase = "", chunkSize = 90){
+
+	const words = phrase.split(' ');
+
+	const chunks = [];
+
+	let currentChunk = '';
+
+	words.forEach(word => {
+
+		if(`${currentChunk} `.length + word.length < chunkSize){
+			currentChunk = `${currentChunk} ${word}`;
+		} else {
+			chunks.push(currentChunk);
+			currentChunk =` ${word}`;
+		}
+
+	});
+
+	return chunks;
+
+}
+
 //use google speech to transcribe for upto 4 attempts then throw error
 
 function transcribeAudio(audioFile, phrase = '', language, attempt = 0){
