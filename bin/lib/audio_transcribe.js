@@ -19,6 +19,53 @@ const speech = new Speech({
 
 
 
+//use google speech to transcribe for upto 4 attempts then throw error
+
+function transcribeAudio(audioFile, phrase = '', language, attempt = 0){
+
+	return new Promise( (resolve, reject) => {
+		const phrases = splitPhrases(phrase);
+		const config = {
+			encoding: 'LINEAR16',
+			sampleRate: 16000,
+			profanityFilter : true,
+			speechContext : {
+				phrases
+			},
+			languageCode : language || 'en-GB',
+			verbose: true
+		};
+
+		speech.recognize(audioFile, config, function(err, result) {
+				
+				if(err){
+
+					if(attempt < 4){
+						transcribeAudio(audioFile, phrase, language, attempt + 1)
+							.then(result => resolve(result))
+						;
+					} else {
+						debug(err);
+						reject(err);
+					}
+
+				} else {
+
+					if(result[0] === undefined){
+						debug('Empty result:', result);
+						resolve('');
+					} else {
+						resolve(result[0].transcript);
+					}
+
+				}
+
+			}
+		);
+
+	} );
+
+}
 
 //transcibe using function transcribAudio function and returns trnscriptions
 module.exports = function(audioFiles, phrase, language = 'en-GB'){
