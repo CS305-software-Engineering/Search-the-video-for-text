@@ -7,15 +7,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
-import { useHistory } from "react-router-dom";
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link as ReactLink } from "react-router-dom";
-const axios = require('axios')
-const qs = require('querystring')
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,88 +48,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignInSide() {
   const classes = useStyles();
-  const history = useHistory();
-  const [signup,setSignup]=React.useState(0)
-  const [emailId,setEmailId]=React.useState("")
-  const [loginPWD,setLoginPWD]=React.useState("")
-  const [signupPWD,setSignupPWD]=React.useState("")
-  const [signupPWDCnf,setSignupPWDCnf]=React.useState("")
-
-
-  function handleSubmit() {
-    // event.preventDefault();
-    console.log("Login:",emailId,loginPWD);
-    const requestBody = {
-      email: emailId,
-      password: loginPWD
-    }
-    const config = {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }
-    axios.post('https://search-the-video-for-text-soft.herokuapp.com/api/v1/users/login', qs.stringify(requestBody), config)
-    .then(function (response) {
-      
-        console.log(response);
-        if(response.status==400){
-          alert("Invalid Email/Password");
-        }
-        let token=response.data.token;
-        let user_type=response.data.user_type;
-        if(user_type=='admin'){
-          console.log("Logged in as Admin");
-
-       history.push('/home',{params:token});
-        }
-        else {
-          console.log("Logged in as User");
-          history.push('/home',{params:token});
-        }
-    })
-    .catch(err =>{
-      console.log(err);
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
-      }
-    })
-  }        
-    
-  function handleCreate() {
-    // event.preventDefault();
-    console.log("Signup",emailId,signupPWD);
-    const requestBody = {
-      email: emailId,
-      password: signupPWD,
-    }
-    const config = {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }
-    axios.post('https://search-the-video-for-text-soft.herokuapp.com/api/v1/users/signup', qs.stringify(requestBody), config)
-    .then(function (response) {
-      
-        console.log(response);
-        if(response.status==400){
-          console.log("Server Error");
-        }
-        // history.push('/home');
-        setSignup(0);
-    })
-    .catch(err =>{
-      console.log(err);
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        console.log(err.response.headers);
-      }
-    })
-    
-  }
-
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -143,16 +58,9 @@ export default function SignInSide() {
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          {
-          signup?
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          :
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          }
           <form className={classes.form} noValidate>
             <TextField
               variant="outlined"
@@ -164,9 +72,6 @@ export default function SignInSide() {
               name="email"
               autoComplete="email"
               autoFocus
-              onChange={(event)=>(
-                setEmailId(event.target.value)
-              )}
             />
             <TextField
               variant="outlined"
@@ -178,102 +83,37 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
-              onChange={(event)=>(
-                signup?
-                setSignupPWD(event.target.value)
-                :
-                setLoginPWD(event.target.value)
-              )}
             />
-            {
-            signup?
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="confirm password"
-              label="Confirm Password"
-              type="password"
-              id="password"
-              autoComplete="confirm-password"
-              onChange={(event)=>(
-                setSignupPWDCnf(event.target.value)
-              )}
-            />
-            :""
-            }
-            {
-            signup?
-            ""
-            :
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            }
             <li>
-              <ReactLink>
+              <ReactLink to="/somepage">
 
-                {signup?
-                <Button
-                //type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={()=>(
-                  signupPWD===signupPWDCnf?
-                  handleCreate()
-                  :
-                  alert("Passwords Do Not Match!")
-                  )}
-              >
-                Sign Up
-              </Button>
-                :
                 <Button
                   //type="submit"
                   fullWidth
                   variant="contained"
                   color="primary"
                   className={classes.submit}
-                  onClick={()=>(
-                    handleSubmit()
-                  )}
+                  //onClick={(e)=>console.log("Pressed submit")}
                   
                 >
                   Sign In
                 </Button>
-                }
               </ReactLink>
             </li>  
             <Grid container>
               <Grid item xs>
-                {
-                signup?
-                ""
-                :
                 <Link href="#" variant="body2">
                   Forgot password?
                 </Link>
-                }
               </Grid>
               <Grid item>
-                {
-                signup?
-                <Link href="#" variant="body2"
-                onClick={()=>(setSignup(0))}
-                >
-                  {"Have an account? Login"}
-                </Link>                
-                :
-                <Link href="#" variant="body2"
-                onClick={()=>(setSignup(1))}
-                >
+                <Link href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
-                }
               </Grid>
             </Grid>
             
