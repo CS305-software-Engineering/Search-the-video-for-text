@@ -4,57 +4,54 @@ const ffmpeg = require('ffmpeg-static');
 
 const tmpPath = process.env.TMP_PATH || '../../tmp';
 
-function runFFmpeg(args) {
-  return new Promise((resolve, reject) => {
-    let output = '';
-    var ffmpeg_path = require.resolve('ffmpeg-static') + '\\..\\ffmpeg.exe';
-    const process = spawn(ffmpeg_path, args);
-    process.on('close', (code) => {
-			if(code === 1){
-				reject();
-			} else if(code === 0){
-				resolve(output);
-			}
-		});
-  });
-}
-
 function getListOfSplitFiles(directory) {
   return new Promise((resolve, reject) => {
     fs.readdir(directory, (err, files) => {
-      if(err) {
-        reject(err);
-      } else {
-        resolve(files.map(f => { return `${directory}/${f}`; }))
+      if(err) reject(err);
+      else {
+        const filePaths = files.map(f => `${directory}/${f}`);
+        resolve(filePaths);
       }
     })
   })
 }
 
-function splitFileAtSpecificIntervals(sourceFilePath, jobID, duration=3) {
-  // sourceFilePath: Path to Input Audio File
-  // jobID: ID of the Job
-  // duration: Slicing the Audio into clips of duration, duration
-  return new Promise((resolve, reject) => {
-    const splitFilesDestination = `${tmpPath}/_${jobID}`;
-    fs.mkdir(splitFilesDestination, function(err){
-      if(err){
-        reject(err);
-      } else {
-        const args = ['-i', sourceFilePath, '-f', 'segment', '-segment_time',	duration, '-c', 'copy', `${splitFilesDestination}/out%03d.wav`];
-        runFFmpeg(args)
-          .then(function(){
-            getListOfSplitFiles(splitFilesDestination)
-              .then(files => resolve(files));
-          })
-          .catch(
-            err => reject(err);
-          );
-      }
-    });
-  });
+function splitAtInterval(audioFilePath, jobID, sliceLength=3) {
+  // audioFilePath: Path to the Audio File to be Splitted
+  // jobID: ID with which the audio file is associated
+  // sliceLength: Interval At Which the File has to be splitted
+  const promise = new Promise(
+    (resolve, reject) => {
+      const slicesDestination = `${tmpPath}/_${jobID}`;
+      fs.mkdir(slicesDestination, (error) => {
+        if(error) reject(error);
+        else {
+          const segmentPromise = new Promise((resolve, reject) => {
+            const args = ['-i', audioFilePath, 'f', 'segment', '-segment_time', sliceLength, '-c', 'copy', `${slicesDestination}/out%03d.wav`];
+            let ffmpeg_exec_path = path.dirname(require.resolve("ffmpeg-static/package.json"));
+            ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
+            const process = spawn(ffmpeg_exec_path, args);
+            process.on('close', (code) => {
+              if(code===1) reject();
+              else if(code===0) resolve(output);
+            });
+          });
+          segmentPromise
+            .then(() => {
+              getListOfSplitFiles(slicesDestination)
+                .then(files => resolve(files))
+                .catch(error => reject(error));
+            })
+            .catch( error => {
+              reject(error);
+            });
+        }
+      });
+    }
+  );
+  return promise;
 }
 
 module.exports = {
-  atIntervals = splitFileAtSpecificIntervals
+  atIntervals = splitAtInterval
 };
