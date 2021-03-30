@@ -26,8 +26,6 @@ if(process.env.NODE_ENV==="production"){
 console.log(__dirname);
 
 
-
-
 //ROUTES//
 app.post('/api/v1/users/login',UserWithDb.login);  // mobile_number , auth_token , user_type
 app.post('/api/v1/users/signup',UserWithDb.create);
@@ -47,4 +45,18 @@ app.listen(PORT, () => {
   console.log('Server has started on port ' + PORT);
 });
 
+
+
+
+
+// // TESTING S3 UPLOAD SERVICE
+
+// const S3_Service = require("./server/controllers/Storage Service/s3_bucket_operations.js")
+// const fs = require('fs');
+// const fileContent = fs.readFileSync('./package.json')
+// S3_Service.uploadObject('package111.json',fileContent)
+
+// S3_Service.checkObject('package111.json').then(res => {
+//   console.log(res)
+// })
 
