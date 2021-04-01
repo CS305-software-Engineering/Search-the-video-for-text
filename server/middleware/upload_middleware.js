@@ -1,10 +1,11 @@
-const MAX_VIDEO_SIZE = 52428800 //50MB
-const VALID_VIDEO_FORMATS = ['mov' ,'wav', 'mp3', 'mp4', 'm4a', 'mxf', 'ogg']
+const path = require('path');
 
-const fileType = require('file-type');
+const MAX_VIDEO_SIZE = 52428800 //50MB
+const VALID_VIDEO_FORMATS = ['.mov' ,'.wav', '.mp3', '.mp4', '.m4a', '.mxf', '.ogg']
+
 
 function videoSizeChecker(req,res,next){
-    //console.log('File size is ',req.headers['content-length'])
+    console.log('File size is ',req.headers['content-length'])
     if( MAX_VIDEO_SIZE > Number(req.headers['content-length'])){
         next()
     }else{
@@ -12,18 +13,18 @@ function videoSizeChecker(req,res,next){
     }
 }
 
- function videoFormatChecker(chunk){
+ function videoFormatChecker(req, file, callback){
 
-    console.log('Checking File Format',chunk)
+    var ext = path.extname(file.originalname);
 
-    const fileFormat =  fileType(chunk)
-    console.log('Format is ',fileFormat)
-    if(fileFormat != null && VALID_VIDEO_FORMATS.indexOf(fileFormat.ext) > -1){
-        return true
-    }else{
-        console.log('Returning false ',fileFormat)
-        return false
+    console.log('EXT IS ',ext," INDEX IS ",VALID_VIDEO_FORMATS.indexOf(ext))
+
+    if(VALID_VIDEO_FORMATS.indexOf(ext) > -1) {
+        callback(null, true)
     }
+    return callback(null, false)
+    
+
 }
 
 module.exports = {
