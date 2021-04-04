@@ -1,12 +1,12 @@
 const fs = require('fs');
-const S3_Service = require("./Storage Service/s3_bucket_operations.js")
+const S3_Service = require("../Storage Service/s3_bucket_operations.js")
 const prepareAudio = require("../AudioProcessing/prepare-audio.js");
 const audioTranscribe = require("../AudioTranscription/audio_transcribe");
 const getTimeIndexes = require("../AudioProcessing/media_info");
 
 const tempPath = process.env.TMP_PATH || '../../tmp';
 
-export default class Job{
+class Job{
     
     constructor(id, lng) {
         this.id = id;
@@ -96,3 +96,5 @@ export default class Job{
     }
 
 }
+
+module.exports = Job;

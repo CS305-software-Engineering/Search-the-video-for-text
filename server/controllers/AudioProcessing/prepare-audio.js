@@ -1,7 +1,7 @@
 const extractAudio = require('./extract_audio');
 const splitAudio = require('./split_audio');
 
-modules.export = function(filePath, jobID, duration) {
+module.export = function(filePath, jobID, duration) {
   return extractAudio(filePath, jobID)
     .then(file => {
       if(duration) {
