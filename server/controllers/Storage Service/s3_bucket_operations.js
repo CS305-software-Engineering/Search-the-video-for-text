@@ -9,7 +9,7 @@ const BUCKET_NAME = process.env.BUCKET_NAME
 
 
 function uploadObjectToS3Bucket(file_name , data, bucket_name = BUCKET_NAME){
-    return new Promise((resolve, reject) => {
+    const promise =  new Promise((resolve, reject) => {
         s3.putObject({
             Bucket : bucket_name,
             Key: file_name,
@@ -21,7 +21,9 @@ function uploadObjectToS3Bucket(file_name , data, bucket_name = BUCKET_NAME){
                 resolve()
             }
         })
-    })
+    });
+    console.log(promise);
+    return promise;
 }
 
 function downloadObjectFromS3Bucket(file_name, bucket_name = BUCKET_NAME){

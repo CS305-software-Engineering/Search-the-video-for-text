@@ -30,15 +30,18 @@ function createJob(file, language = 'en-GB') {
 			});
         });
     } else {
+        console.log('Uploading to Bucket');
         const filePath = `${tempPath}/${jobID}`;
-        S3_Service.uploadObject(filePath, file)
-        .then(() => {
+        const promise = S3_Service.uploadObject(filePath, file).then(() => {
+            console.log("Success");
             _createJob(jobID);
             return jobID;
         })
         .catch(error => {
+            console.log("Error");
             console.log(error);
         });
+        return promise;
     }
 }
 
