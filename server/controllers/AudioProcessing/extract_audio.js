@@ -4,7 +4,7 @@ const { spawn } = require('child_process');
 const ffmpeg = require('ffmpeg-static');
 const path = require('path');
 
-const tmpPath = process.env.TMP_PATH || '../../tmp';
+const tmpPath = process.env.TMP_PATH || './server/tmp';
 
 module.exports =  function(videoFile, jobID) {
   return new Promise((resolve, reject) => {

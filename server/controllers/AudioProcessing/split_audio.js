@@ -6,7 +6,7 @@ const ffmpeg = require('ffmpeg-static');
 const getDuration = require('./media_info');
 
 const maxClipSize = process.env.MAX_CLIP_SIZE || 20;
-const tmpPath = process.env.TMP_PATH || '../../tmp';
+const tmpPath = process.env.TMP_PATH || './server/tmp';
 
 function filePaths(directory) {
   // Takes in the path of a directory
@@ -163,7 +163,7 @@ function padding(num){
 function splitOnSilence(audioFilePath, jobID) {
   const promise = new Promise(
     (resolve, reject) => {
-      const slicesDestination = `${tmpPath}/_${jobID}`;
+      const slicesDestination = `${tmpPath}/__${jobID}`;
       fs.mkdir(slicesDestination, (error) => {
         if(error) reject(error);
         else {
