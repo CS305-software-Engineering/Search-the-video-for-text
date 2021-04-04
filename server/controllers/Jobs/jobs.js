@@ -64,6 +64,32 @@ function maxJob() {
     return maximumConcurrentJobs;
 }
 
+
+function workThroughQueue(){
+
+	while(jobsInProgress.length < maximumConcurrentJobs && jobsQueue.length > 0){
+		const jobToStart = jobsQueue.shift();
+		jobToStart.start();
+		jobsInProgress.push(jobToStart);
+	}
+
+}
+
+function checkJobs(){
+
+	jobsInProgress.forEach( (job, idx) => {
+
+		if(job.finished){
+			jobsInProgress.splice(idx, 1);
+		}
+
+	});
+
+}
+
+setInterval(checkJobs, 1000);
+setInterval(workThroughQueue, 5000);
+
 module.exports = {
 	create : createJob,
     get: getJob,

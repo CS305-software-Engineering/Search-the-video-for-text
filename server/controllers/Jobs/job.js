@@ -1,10 +1,10 @@
 const fs = require('fs');
 const S3_Service = require("../Storage Service/s3_bucket_operations.js")
 const prepareAudio = require("../AudioProcessing/prepare-audio.js");
-const audioTranscribe = require("../AudioTranscription/audio_transcribe");
+const audio_transcribe = require("../AudioTranscription/audio_transcribe");
 const getTimeIndexes = require("../AudioProcessing/media_info");
 
-const tempPath = process.env.TMP_PATH || '../../tmp';
+const tempPath = process.env.TMP_PATH || './server/tmp';
 
 class Job{
     
@@ -22,6 +22,7 @@ class Job{
         new Promise((resolve, reject) => {
             fs.access(destination, (error) => {
                 if(error) {
+                    console.log(error);
                     console.log('File Not Present on the Server, Fetch from Amazon Bucket');
                     S3_Service.downloadObject(`tmp/${this.id}`)
                     .then(data => {
@@ -44,14 +45,14 @@ class Job{
         })
         .then(fileDestination => {
             prepareAudio(fileDestination, this.id, process.env.AUDIO_MAX_DURATION_TIME || 55)
-            .then(audio => audioTranscribe(audio, undefined, this.language))
+            .then(audio => audio_transcribe.transcriber(audio, "temp", this.language))
             .then(transcriptions => {
                 if(transcriptions.length > 1) {
                     transcriptions = transcriptions.join(' ');
                 } else {
                     transcriptions = transcriptions[0];
                 }
-
+                console.log("Transcriptions Final => ", transcriptions);
                 return prepareAudio(fileDestination, this.id) 
                 .then(files => {
                     return getTimeIndexes(files)
@@ -63,7 +64,7 @@ class Job{
                     });
                 })
                 .then(data => {
-                    return audioTranscribe(data.files, transcriptions, this.language)
+                    return audio_transcribe(data.files, transcriptions, this.language)
                     .then(transcriptions => {
                         return transcriptions.map( (transcript, index) => {
                             return {

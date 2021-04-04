@@ -33,6 +33,9 @@ function splitPhrases(phrase = "", clusterSize = 90){
 //use google speech to transcribe for upto 4 attempts then throw error
 
 function transcribeAudio(audioPath, contextPhrase = '', language){
+	console.log("transcribeAudio");
+	console.log(audioPath);
+	console.log(contextPhrase);
 	const speech = require('@google-cloud/speech');	
 	// Creates a client
 	const speechClient = new speech.SpeechClient();
@@ -50,7 +53,7 @@ function transcribeAudio(audioPath, contextPhrase = '', language){
 		
 	  const config = {
         encoding: 'LINEAR16',
-		audioChannelCount: 2,
+		audioChannelCount: 1,
         languageCode:language|| 'en-US',
 		speechContext:{ContextPhrases}
       };
@@ -68,7 +71,7 @@ function transcribeAudio(audioPath, contextPhrase = '', language){
 			return transcription
 		  })
 		  .catch(err => {
-			console.error('ERROR:', err);
+			console.error('SPEECH CLIENT ERROR:', err);
 		  });
 	
 
@@ -80,6 +83,9 @@ module.exports =
 {transcriber(audioPaths, phrase, language = 'en-GB'){
 
 
+	console.log("Transcriber");
+	console.log(audioPaths);
+
 	if(audioPaths.constructor !== Array){
 		audioPaths = [audioPaths];
 	}
@@ -88,10 +94,11 @@ module.exports =
 	return Promise.all( audioPaths.map(audioPath => { return transcribeAudio(audioPath, phrase, language) } ) )
 		.then(transcriptions => {
 			console.time('transcribe');
+			console.log('Transcription Hero => ', transcriptions);
 			return transcriptions;
 		})
 		.catch(err => {
-			debug('Transcription error:', err);
+			console.log('Transcription error:', err);
 			throw Error('An error occurred in the transcription process');
 		})
 	;
