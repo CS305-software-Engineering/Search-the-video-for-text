@@ -53,7 +53,7 @@ async function transcribeAudio(audioPath, contextPhrase = '', language){
 		
 	  const config = {
         encoding: 'LINEAR16',
-		audioChannelCount: 2,
+		audioChannelCount: 1,
         languageCode:language|| 'en-US',
 		speechContext:{ContextPhrases}
       };

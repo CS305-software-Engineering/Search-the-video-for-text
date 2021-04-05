@@ -6,7 +6,7 @@ const ffmpeg = require('ffmpeg-static');
 const getDuration = require('./media_info');
 
 const maxClipSize = process.env.MAX_CLIP_SIZE || 20;
-const tmpPath = process.env.TMP_PATH || '../../tmp';
+const tmpPath = process.env.TMP_PATH || './server/tmp';
 
 function filePaths(directory) {
   // Takes in the path of a directory
@@ -163,7 +163,7 @@ function padding(num){
 function splitOnSilence(audioFilePath, jobID) {
   const promise = new Promise(
     (resolve, reject) => {
-      const slicesDestination = `${tmpPath}/_${jobID}`;
+      const slicesDestination = `${tmpPath}/__${jobID}`;
       fs.mkdir(slicesDestination, (error) => {
         if(error) reject(error);
         else {
@@ -181,8 +181,9 @@ function splitOnSilence(audioFilePath, jobID) {
                     ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
                     const process = spawn(ffmpeg_exec_path, args);
                     process.on('close', (code) => {
-                      if(code===1) reject();
-                      else if(code===0) resolve();
+                      // if(code===1) {console.log("I am Rejecting"); reject();}
+                      // else if(code===0) resolve();
+                      resolve();
                     });
                   });
                   return ffmpegPromise;
@@ -190,7 +191,7 @@ function splitOnSilence(audioFilePath, jobID) {
               })
               .then(() => {
                 filePaths(slicesDestination)
-                .then(files => resolve(files));
+                .then(files => {resolve(files)});
               })
               .catch();
             }
