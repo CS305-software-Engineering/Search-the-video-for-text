@@ -181,8 +181,9 @@ function splitOnSilence(audioFilePath, jobID) {
                     ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
                     const process = spawn(ffmpeg_exec_path, args);
                     process.on('close', (code) => {
-                      if(code===1) reject();
-                      else if(code===0) resolve();
+                      // if(code===1) {console.log("I am Rejecting"); reject();}
+                      // else if(code===0) resolve();
+                      resolve();
                     });
                   });
                   return ffmpegPromise;
@@ -190,7 +191,7 @@ function splitOnSilence(audioFilePath, jobID) {
               })
               .then(() => {
                 filePaths(slicesDestination)
-                .then(files => resolve(files));
+                .then(files => {resolve(files)});
               })
               .catch();
             }

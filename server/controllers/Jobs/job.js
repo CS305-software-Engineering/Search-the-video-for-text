@@ -45,14 +45,13 @@ class Job{
         })
         .then(fileDestination => {
             prepareAudio(fileDestination, this.id, process.env.AUDIO_MAX_DURATION_TIME || 55)
-            .then(audio => audio_transcribe.transcriber(audio, "temp", this.language))
+            .then(audio => audio_transcribe.transcriber(audio, undefined, this.language))
             .then(transcriptions => {
                 if(transcriptions.length > 1) {
                     transcriptions = transcriptions.join(' ');
                 } else {
                     transcriptions = transcriptions[0];
                 }
-                console.log("Transcriptions Final => ", transcriptions);
                 return prepareAudio(fileDestination, this.id) 
                 .then(files => {
                     return getTimeIndexes(files)
@@ -64,12 +63,12 @@ class Job{
                     });
                 })
                 .then(data => {
-                    return audio_transcribe(data.files, transcriptions, this.language)
+                    return audio_transcribe.transcriber(data.files, transcriptions, this.language)
                     .then(transcriptions => {
                         return transcriptions.map( (transcript, index) => {
                             return {
                                 transcription: transcript,
-                                timeOffsets: data.durations[idx]
+                                timeOffsets: data.durations[index]
                             };
                         } );
                     })

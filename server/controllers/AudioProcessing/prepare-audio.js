@@ -7,7 +7,7 @@ module.exports = function(filePath, jobID, duration) {
       if(duration) {
         return splitAudio.atIntervals(file, jobID, duration);
       } else {
-        splitAudio.onSilence(file, jobID);
+        return splitAudio.onSilence(file, jobID);
       }
     })
     ;
