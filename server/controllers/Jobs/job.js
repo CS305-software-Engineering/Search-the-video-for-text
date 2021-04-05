@@ -63,8 +63,11 @@ class Job{
                     });
                 })
                 .then(data => {
-                    return audio_transcribe.transcriber(data.files, transcriptions, this.language)
+                    return audio_transcribe.transcriber(data.files.slice(1,data.files.length), transcriptions, this.language)
                     .then(transcriptions => {
+
+                        console.log("Printing transcription received in Job.js")
+                        console.log(transcriptions)
                         return transcriptions.map( (transcript, index) => {
                             return {
                                 transcription: transcript,
