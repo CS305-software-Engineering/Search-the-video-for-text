@@ -56,7 +56,7 @@ app.listen(PORT, () => {
 
 
 
-// // TESTING S3 UPLOAD SERVICE
+// TESTING S3 UPLOAD SERVICE
 
 // const S3_Service = require("./server/controllers/Storage Service/s3_bucket_operations.js")
 // const fs = require('fs');
@@ -65,5 +65,9 @@ app.listen(PORT, () => {
 
 // S3_Service.checkObject('package111.json').then(res => {
 //   console.log(res)
+// })
+
+// S3_Service.getSignedURL('package111.json').then( url => {
+//   console.log(url)
 // })
 
