@@ -3,8 +3,10 @@ const S3_Service = require("../Storage Service/s3_bucket_operations.js")
 const prepareAudio = require("../AudioProcessing/prepare-audio.js");
 const audio_transcribe = require("../AudioTranscription/audio_transcribe");
 const getTimeIndexes = require("../AudioProcessing/media_info");
-
+const generateSubtitles = require('../SubsFileGeneration/gen_sub_file');
 const tempPath = process.env.TMP_PATH || './server/tmp';
+const filePathCreater = require('../../middleware/upload_middleware.js').getUploadS3PathOfVtt
+
 
 class Job{
     
@@ -83,12 +85,40 @@ class Job{
                     });
                 })
             })
-            .then(transcriptions => {
-
+            .then(transcriptions=>{
                 this.transcription = transcriptions;
-                this.finished = true;
+                //console.log("last of job.js")
+                //console.log(transcriptions)
+               return generateSubtitles(this.transcription.transcribedChunks)
+                
+               
+            }
+
+            ).then((subs) => {
+                try {
+                    fs.writeFileSync(`${tempPath}/_${this.id}/sub.vtt`, subs);
+                   //file written successfully
+                 } catch (err) {
+                   console.error(err)
+                 }
+                return subs
                 // TODO: Clean Up this.id
 
+            }).then((subs)=>{
+                const data = filePathCreater(this.id,'.vtt');
+                const promise = S3_Service.uploadObject(data.S3_Path, subs).then(() => {
+                    console.log("Success! Vtt file ",data.fileID);
+                    console.log("Saved at ",data.S3_Path);
+                })
+                .catch(error => {
+                    console.log("Error");
+                    console.log(error);
+                });
+                return promise;
+                
+
+            }).then(()=>{
+                this.finished = true;
             });
         })
         .catch(error => {

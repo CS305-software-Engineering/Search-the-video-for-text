@@ -101,8 +101,8 @@ module.exports =
 	var results 
 	try{
 	results=await Promise.all(tasks)
-	console.log("transcription results in audio_transcribe=>")
-	console.log(results)
+	//console.log("transcription results in audio_transcribe=>")
+	//console.log(results)
 	}catch{
 		console.error(e);
 	}

@@ -34,9 +34,20 @@ function getUploadS3PathOfFile(userId,file){
         fileID : fileID + ext
     }
 }
+function getUploadS3PathOfVtt(jobID,ext){
+    //const fileID = uuid()
+    //var ext = path.extname(file.originalname);
+   // const filePathS3 = 'transcripts/'+jobID + '/' + fileID + ext
+   const filePathS3 = 'transcripts/'+jobID + ext
+    return {
+        S3_Path : filePathS3,
+        fileID : jobID + ext
+    }
+}
 
 module.exports = {
     videoSizeChecker,
     videoFormatChecker,
-    getUploadS3PathOfFile
+    getUploadS3PathOfFile,
+    getUploadS3PathOfVtt
 }

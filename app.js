@@ -1,4 +1,5 @@
 const express = require("express");
+
 const app = express();
 const cors = require("cors");
 const PORT = process.env.PORT||5000;
@@ -33,7 +34,7 @@ app.post('/api/v1/users/insert_into_history', Auth.verifyToken, UserWithDb.inser
 
 
 app.use('/api/v1/upload_and_transcribe',require('./server/router/upload_and_transcribe.js'));
-
+app.use('/api/v1/get_sub_file', require('./server/router/get_sub_file.js'));
 
 
 
@@ -51,7 +52,6 @@ app.get("*",(req,res)=>{
 app.listen(PORT, () => {
   console.log('Server has started on port ' + PORT);
 });
-
 
 
 
