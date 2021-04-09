@@ -32,7 +32,7 @@ router.post('/', upload.single('file'), function (req, res) {
             
                 jobs.create(req.file.buffer).then(
                     jobID => {
-                        res.status(200).send({ "message": "Job Created", "id": `${jobID}` })
+                        res.status(200).send({ "message": "Job Created", "id": `${jobID}`,"video_id": `${fileData.fileID}` })
                     }
                 ).catch(
                     error => {

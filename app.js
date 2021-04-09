@@ -35,7 +35,7 @@ app.post('/api/v1/users/insert_into_history', Auth.verifyToken, UserWithDb.inser
 
 app.use('/api/v1/upload_and_transcribe',require('./server/router/upload_and_transcribe.js'));
 app.use('/api/v1/get_sub_file', require('./server/router/get_sub_file.js'));
-
+app.use('/api/v1/get_video_streaming_link', require('./server/router/get_video_streaming_link.js'));
 
 
 
