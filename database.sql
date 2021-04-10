@@ -26,8 +26,9 @@ CREATE TABLE IF NOT EXISTS
 		id VARCHAR(256) PRIMARY KEY,
         sub_id VARCHAR(256),
         search_text VARCHAR(256) NOT NULL,
-		date_created TIMESTAMP,
-        FOREIGN KEY(sub_id) REFERENCES user_history(sub_id) ON DELETE CASCADE
+        transcribed_text VARCHAR(10240) NOT NULL,
+        PRIMARY KEY(id, date_created, video_link),
+        FOREIGN KEY(id) REFERENCES users(id) ON DELETE CASCADE
     );
 	
 -- SELECT * FROM user_history;
