@@ -97,14 +97,14 @@ const User = {
 
   async insert_into_history(req, res){
     const check = 'SELECT * FROM users WHERE id = ($1)';
-    const query = 'INSERT INTO search_history(id, date_created, video_link, search_text) VALUES ($1, $2, $3, $4) returning *';
+    const query = 'INSERT INTO search_history(id, date_created, video_link, search_text, transcribed_text) VALUES ($1, $2, $3, $4, $5) returning *';
     try{
       const check_user = await db.query(check, [req.user.id]);
       if(!check_user.rows[0]){
         return res.status(404).send({'message': 'user does not exist.'});
       }
-      console.log([req.user.id, moment(new Date()), req.body.video_link, req.body.search_text]);
-      const {rows} = await db.query(query, [req.user.id, moment(new Date()), req.body.video_link, req.body.search_text]);
+      console.log([req.user.id, moment(new Date()), req.body.video_link, req.body.search_text, req.body.transcript]);
+      const {rows} = await db.query(query, [req.user.id, moment(new Date()), req.body.video_link, req.body.search_text, req.body.transcript]);
       console.log(rows);
       if(!rows[0]){
         return res.status(404).send({'message': 'Could not insert into database'});
