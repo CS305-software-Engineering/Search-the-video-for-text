@@ -30,11 +30,6 @@ console.log(__dirname);
 //ROUTES//
 app.post('/api/v1/users/login',UserWithDb.login);
 app.post('/api/v1/users/signup',UserWithDb.create);
-app.get('/api/v1/users/insert_into_history', Auth.verifyToken, UserWithDb.insert_into_history);
-app.get('/api/v1/users/get_history', Auth.verifyToken, UserWithDb.get_history);
-app.get('/api/v1/users/view_profile', Auth.verifyToken, UserWithDb.see_profile);
-app.get('/api/v1/users/update_profile', Auth.verifyToken, UserWithDb.update_password);
-
 
 
 app.use('/api/v1/upload_and_transcribe',require('./server/router/upload_and_transcribe.js'));
