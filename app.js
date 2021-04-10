@@ -32,6 +32,9 @@ console.log(__dirname);
 app.post('/api/v1/users/login',UserWithDb.login);  // mobile_number , auth_token , user_type
 app.post('/api/v1/users/signup',UserWithDb.create);
 app.get('/api/v1/users/insert_into_history', Auth.verifyToken, UserWithDb.insert_into_history);
+app.get('/api/v1/users/get_history', Auth.verifyToken, UserWithDb.get_history);
+app.get('/api/v1/users/view_profile', Auth.verifyToken, UserWithDb.see_profile);
+app.get('/api/v1/users/update_profile', Auth.verifyToken, UserWithDb.update_password);
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Search-the-video-for-text application." });

@@ -113,6 +113,46 @@ const User = {
     }catch(error){
       return res.status(400).send(error);
     }
+  },
+
+  async get_history(req, res){
+    const query = 'SELECT * FROM search_history WHERE id = ($1)';
+    try{
+      id = req.user.id;
+      const {rows} = await db.query(query, [id]);
+      return res.status(200).send(rows);
+    }catch(error){
+      return res.status(400).send(error);
+    }
+  },
+
+  async see_profile(req, res){
+    const query = 'SELECT * FROM users WHERE id = ($1)';
+    try{
+      id = req.user.id;
+      const {rows} = await db.query(query, [id]);
+      if(!rows[0]){
+        return res.status(400).send({'message' : 'Could not find profile'});
+      }
+      return res.status(200).send(rows[0]);
+    }catch(error){
+      return res.status(400).send(error);
+    }
+  },
+
+  async update_password(req, res){
+    const query = 'UPDATE users SET password = ($1), modified_date = ($2) WHERE id = ($3)';
+    const hashPassword = Helper.hashPassword(req.body.password);
+    try{  
+      const param = [hashPassword, moment(new Date()), req.user.id];
+      const {rows} = await db.query(query, param);
+      if(!rows[0]){
+        return res.status(400).send({'message' : 'Could not update profile'});
+      }
+      return res.status(200).send(rows);
+    }catch(error){
+      return res.status(400).send(error);
+    }
   }
 }
 

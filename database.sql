@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS
         date_created TIMESTAMP,
         video_link VARCHAR(256) NOT NULL,
         search_text VARCHAR(256) NOT NULL,
+        transcribed_text VARCHAR(10240) NOT NULL,
         PRIMARY KEY(id, date_created, video_link),
         FOREIGN KEY(id) REFERENCES users(id) ON DELETE CASCADE
     );
