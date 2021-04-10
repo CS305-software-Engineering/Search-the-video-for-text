@@ -28,9 +28,8 @@ console.log(__dirname);
 
 
 //ROUTES//
-app.post('/api/v1/users/login',UserWithDb.login);  // mobile_number , auth_token , user_type
+app.post('/api/v1/users/login',UserWithDb.login);
 app.post('/api/v1/users/signup',UserWithDb.create);
-app.post('/api/v1/users/insert_into_history', Auth.verifyToken, UserWithDb.insert_into_history);
 
 
 app.use('/api/v1/upload_and_transcribe',require('./server/router/upload_and_transcribe.js'));
