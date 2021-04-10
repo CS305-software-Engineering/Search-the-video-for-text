@@ -10,6 +10,8 @@ const upload = require('../controllers/Upload Handler/receive_file.js').upload
 const videoSizeChecker = require('../middleware/upload_middleware.js').videoSizeChecker
 const filePathCreater = require('../middleware/upload_middleware.js').getUploadS3PathOfFile
 const S3_Service = require("../controllers/Storage Service/s3_bucket_operations.js")
+const addProcessDetailsToHistory = require('../controllers/History Management/video_history.js').insert_video_into_history
+
 
 router.use(Auth.verifyToken)
 
@@ -32,7 +34,18 @@ router.post('/', upload.single('file'), function (req, res) {
             
                 jobs.create(req.file.buffer).then(
                     jobID => {
-                        res.status(200).send({ "message": "Job Created", "id": `${jobID}`,"video_id": `${fileData.fileID}` })
+                        addProcessDetailsToHistory(req.user.id,fileData.fileID,req.file.originalname,jobID).then(
+                            val => {
+                                console.log(val)
+                                res.status(200).send({ "message": "Job Created", "id": `${jobID}`,"video_id": `${fileData.fileID}` })
+                            }
+                        ).catch(
+                            error => {
+                                console.log(error);
+                                res.status(500).send({status : 'error', reason : error.reason || error})
+                            }
+                        )
+                        
                     }
                 ).catch(
                     error => {
