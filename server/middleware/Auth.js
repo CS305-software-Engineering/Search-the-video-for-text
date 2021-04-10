@@ -13,7 +13,8 @@ const Auth = {
     console.log(req.body)
     console.log(req.headers)
     const token = req.headers['x-access-token'];
-    console.log("Verifying Token");
+    console.log("Verifying Token")
+    console.log(token)
     if(!token) {
       return res.status(400).send({ 'message': 'Token is not provided' });
     }
@@ -35,7 +36,8 @@ const Auth = {
     console.log(req.body)
     console.log(req.headers)
     const token = req.headers['x-access-token'];
-    console.log("Verifying Token");
+    console.log("Verifying Token")
+    console.log(token)
     if(!token) {
       return res.status(400).send({ 'message': 'Token is not provided' });
     }
