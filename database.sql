@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS
 CREATE TABLE IF NOT EXISTS
     user_history(
 		video_id VARCHAR(256) NOT NULL,
-        user_id VARCHAR(256) UNIQUE NOT NULL,
+        user_id VARCHAR(256) NOT NULL,
         sub_id VARCHAR(256) UNIQUE NOT NULL,
 		file_name VARCHAR(256) NOT NULL,
 		date_created TIMESTAMP,
