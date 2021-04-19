@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node app.js",
-    "heroku-postbuild": "chmod -R 765 server/controllers/AudioProcessing/ffmpeg.exe && cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "Praful Gupta",
   "license": "MIT",
