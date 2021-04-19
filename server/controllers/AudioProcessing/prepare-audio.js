@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const extractAudio = require('./extract_audio');
 const splitAudio = require('./split_audio');
 
