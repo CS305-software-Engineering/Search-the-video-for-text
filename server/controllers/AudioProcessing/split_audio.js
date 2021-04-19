@@ -38,8 +38,9 @@ function splitAtInterval(audioFilePath, jobID, sliceLength=3) {
             // ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
             
             // Added Line
-            let ffmpeg_exec_path = "server/controllers/AudioProcessing/ffmpeg.exe"
-
+            let ffmpeg_exec_path = path.join(__dirname, "server/controllers/AudioProcessing/ffmpeg.exe")
+            console.log("ls-ing");
+            spawn("ls", []);
             const process = spawn(ffmpeg_exec_path, args);
             process.on('close', (code) => {
               if(code===1) reject();
@@ -72,7 +73,7 @@ function startProcessSilenceDetect(audioFilePath) {
     // ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
     
     // Added Line
-    let ffmpeg_exec_path = "server/controllers/AudioProcessing/ffmpeg.exe"
+    let ffmpeg_exec_path = path.join(__dirname, "server/controllers/AudioProcessing/ffmpeg.exe")
     
     const process = spawn(ffmpeg_exec_path, args);
     process.on('close', (code) => {
@@ -189,7 +190,7 @@ function splitOnSilence(audioFilePath, jobID) {
                     // ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
                     
                     // Added Line
-                    let ffmpeg_exec_path = "server/controllers/AudioProcessing/ffmpeg.exe"
+                    let ffmpeg_exec_path = path.join(__dirname, "server/controllers/AudioProcessing/ffmpeg.exe")
 
                     const process = spawn(ffmpeg_exec_path, args);
                     process.on('close', (code) => {

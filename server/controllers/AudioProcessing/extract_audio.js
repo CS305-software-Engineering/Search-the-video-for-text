@@ -23,7 +23,7 @@ module.exports =  function(videoFile, jobID) {
           // ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
           
           // Added Line
-          let ffmpeg_exec_path = "server/controllers/AudioProcessing/ffmpeg.exe"
+          let ffmpeg_exec_path = path.join(__dirname, "server/controllers/AudioProcessing/ffmpeg.exe")
           
           const process = spawn(ffmpeg_exec_path, args);
           
