@@ -19,8 +19,12 @@ module.exports =  function(videoFile, jobID) {
         } else {
           const audioFile = `${tmpPath}/${jobID}.wav`;
           const args = ['-i', videoFile, '-ac', '1', '-ab', '6400', '-ar', '16000', audioFile, '-y'];
-          let ffmpeg_exec_path = path.dirname(require.resolve("ffmpeg-static/package.json"));
-          ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
+          // let ffmpeg_exec_path = path.dirname(require.resolve("ffmpeg-static/package.json"));
+          // ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
+          
+          // Added Line
+          let ffmpeg_exec_path = "server/controllers/AudioProcessing/ffmpeg.exe"
+          
           const process = spawn(ffmpeg_exec_path, args);
           
           // Setting Up Process Callbacks
