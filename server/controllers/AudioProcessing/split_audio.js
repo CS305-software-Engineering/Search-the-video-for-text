@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
 var os = require('os');
 var path = require('path');
@@ -34,8 +36,11 @@ function splitAtInterval(audioFilePath, jobID, sliceLength=3) {
         else {
           const segmentPromise = new Promise((resolve, reject) => {
             const args = ['-i', audioFilePath, '-f', 'segment', '-segment_time', sliceLength, '-c', 'copy', `${slicesDestination}/out%03d.wav`];
-            let ffmpeg_exec_path = path.dirname(require.resolve("ffmpeg-static/package.json"));
-            ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
+            // let ffmpeg_exec_path = path.dirname(require.resolve("ffmpeg-static/package.json"));
+            // ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
+            
+            // Added Line
+            let ffmpeg_exec_path = require('ffmpeg-static');
             const process = spawn(ffmpeg_exec_path, args);
             process.on('close', (code) => {
               if(code===1) reject();
@@ -64,8 +69,11 @@ function startProcessSilenceDetect(audioFilePath) {
   const silenceDetectPromise = new Promise( (resolve, reject) => {
     let output = '';
     const args = ['-i', audioFilePath, '-af', 'silencedetect=n=-40dB:d=0.2', '-f', 'null', '-'];
-    let ffmpeg_exec_path = path.dirname(require.resolve("ffmpeg-static/package.json"));
-    ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
+    // let ffmpeg_exec_path = path.dirname(require.resolve("ffmpeg-static/package.json"));
+    // ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
+    
+    // Added Line
+    let ffmpeg_exec_path = require('ffmpeg-static');    
     const process = spawn(ffmpeg_exec_path, args);
     process.on('close', (code) => {
       if(code===1) reject('FFMPEG ERROR');
@@ -177,8 +185,11 @@ function splitOnSilence(audioFilePath, jobID) {
                 return Promise.all(clips.map( (clip, index) => {
                   const ffmpegPromise = new Promise((resolve, reject) => {
                     const args = ['-ss', clip.start, '-t', clip.duration, '-i', audioFilePath, `${slicesDestination}/out${ padding(index) }.wav`];
-                    let ffmpeg_exec_path = path.dirname(require.resolve("ffmpeg-static/package.json"));
-                    ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
+                    // let ffmpeg_exec_path = path.dirname(require.resolve("ffmpeg-static/package.json"));
+                    // ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
+                    
+                    // Added Line
+                    let ffmpeg_exec_path = require('ffmpeg-static');
                     const process = spawn(ffmpeg_exec_path, args);
                     process.on('close', (code) => {
                       // if(code===1) {console.log("I am Rejecting"); reject();}

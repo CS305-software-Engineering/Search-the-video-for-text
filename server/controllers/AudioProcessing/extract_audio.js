@@ -1,7 +1,9 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
 const fileInfo = require('file-type');
 const { spawn } = require('child_process');
-const ffmpeg = require('ffmpeg-static');
+// process.env.FFMPEG_PATH = require('ffmpeg-static').path;
 const path = require('path');
 
 const tmpPath = process.env.TMP_PATH || './server/tmp';
@@ -19,8 +21,8 @@ module.exports =  function(videoFile, jobID) {
         } else {
           const audioFile = `${tmpPath}/${jobID}.wav`;
           const args = ['-i', videoFile, '-ac', '1', '-ab', '6400', '-ar', '16000', audioFile, '-y'];
-          let ffmpeg_exec_path = path.dirname(require.resolve("ffmpeg-static/package.json"));
-          ffmpeg_exec_path = path.join(ffmpeg_exec_path, 'ffmpeg.exe');
+          let ffmpeg_exec_path = require('ffmpeg-static');
+          console.log("Path : ", ffmpeg_exec_path);
           const process = spawn(ffmpeg_exec_path, args);
           
           // Setting Up Process Callbacks
@@ -30,7 +32,7 @@ module.exports =  function(videoFile, jobID) {
               console.log(`stdout: ${data}`);
             }
           });
-
+          process.stderr.setEncoding("utf-8");
           process.stderr.on('data', (data) => {
             console.log(`stderr: ${data}`);
           });
