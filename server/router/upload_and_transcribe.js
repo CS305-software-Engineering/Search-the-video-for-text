@@ -12,8 +12,8 @@ const filePathCreater = require('../middleware/upload_middleware.js').getUploadS
 const S3_Service = require("../controllers/Storage Service/s3_bucket_operations.js")
 const addProcessDetailsToHistory = require('../controllers/History Management/video_history.js').insert_video_into_history
 
-const cors = require("cors");
-router.use(cors());
+// const cors = require("cors");
+// router.use(cors());
 
 router.use(Auth.verifyToken)
 
