@@ -11,6 +11,8 @@ const Auth = require("./server/middleware/Auth.js");
 
 dotenv.config();
 
+app.use(cors());
+
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 
@@ -18,7 +20,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //middleware
-app.use(cors());
+
 app.use(express.json()); //req.body
 
 if(process.env.NODE_ENV==="production"){

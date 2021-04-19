@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { spawn } = require('child_process');
 var os = require('os');
 process.env.FFPROBE_PATH = require('ffprobe-static').path;
