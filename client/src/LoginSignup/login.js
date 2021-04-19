@@ -79,13 +79,9 @@ export default function SignInSide() {
         if(response.status==400){
           alert("Invalid Email/Password");
         }
-<<<<<<< HEAD
         let token=response.data.token
         document.cookie=token.toString();
         console.log("Token",document.cookie)
-=======
-        let token=response.data.token;
->>>>>>> 133d8dfec8f914930e4b08c751addd713cb7a3f6
         let user_type=response.data.user_type;
         if(user_type=='admin'){
           console.log("Logged in as Admin");
