@@ -22,6 +22,7 @@ app.use(cors());
 app.use(express.json()); //req.body
 
 if(process.env.NODE_ENV==="production"){
+  console.log("DIRECTORY ", __dirname);
   app.use(express.static(path.join(__dirname,"client/build")));
 }
 console.log(__dirname);
