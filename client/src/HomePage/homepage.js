@@ -16,6 +16,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link as ReactLink } from "react-router-dom";
 import YouTubePlayer from "react-player/lib/players/YouTube";
 import './homepage.css';
+import Loader from 'react-loader-spinner'
 import axios from "axios"
 import { Input } from '@material-ui/core';
 const qs = require('querystring')
@@ -116,8 +117,17 @@ export default function HomePage() {
             .then((response) => {
   
               console.log("Get Sub File:",response)
+              fetch("https://user-upload-videos-iitrpr.s3.us-east-2.amazonaws.com/transcripts/1618938340830.vtt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAX3SYYYONOAN3DHMX%2F20210420%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20210420T170542Z&X-Amz-Expires=604800&X-Amz-Signature=8c7e2f4c3f736e293380b774e49be7a867cc1ec4939e02ea84c23246337e1755&X-Amz-SignedHeaders=host")
+              .then((response) => {
+                console.log(response)
+              }
+              
+              )
+              setLoading(false)
               // setVideoID(response.data.video_link)
             })
+          
+            
   
       }).catch((error) => {
         //handle error
@@ -184,11 +194,26 @@ export default function HomePage() {
             color="primary"
             style={{marginLeft:"870px",marginTop:"900px"}}
             className={classes.submit}
-            onClick={async ()=>{
-              uploadHandler();
-            }}
           >
-            Search
+            {
+            loading?
+            <div className={classes.spinner}>
+            <Loader
+                type="Puff"
+                color="#00BFFF"
+                height={100}
+                width={100}
+                //timeout={3000} //3 secs
+            />
+            </div>
+            :
+            <div
+            onClick={async ()=>{
+              setLoading(true)
+              uploadHandler();
+            }}>
+            Search</div>
+            }
           </Button>
       </div>
   )
