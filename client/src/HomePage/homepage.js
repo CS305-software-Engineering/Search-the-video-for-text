@@ -18,6 +18,7 @@ import YouTubePlayer from "react-player/lib/players/YouTube";
 import './homepage.css';
 import axios from "axios"
 import { Input } from '@material-ui/core';
+const qs = require('querystring')
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,24 +81,48 @@ export default function HomePage() {
         console.log("Here1")
         console.log(response)
         let video_req_id=response.data.video_id
+        let job_id=response.data.id
 
-        axios.post("https://search-the-video-for-text-soft.herokuapp.com/api/v1/get_video_streaming_link", video_req_id, {
+        const requestBody={
+          video_id:video_req_id,
+          key:document.cookie
+        }
+
+        console.log("REQBODY:",requestBody)
+
+        axios.post("https://search-the-video-for-text-soft.herokuapp.com/api/v1/get_video_streaming_link", qs.stringify(requestBody), {
           headers: {
             'accept': 'application/json',
             'Accept-Language': 'en-US,en;q=0.8',
             "x-access-token": document.cookie,
-            'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
           }
         })
           .then((response) => {
 
             console.log("Streaming Link Response:",response)
+            setVideoID(response.data.video_link)
           })
     
-
+          axios.get("https://search-the-video-for-text-soft.herokuapp.com/api/v1/get_sub_file", {
+            headers: {
+              'accept': 'application/json',
+              'Accept-Language': 'en-US,en;q=0.8',
+              "x-access-token": document.cookie,
+              "jobID":job_id,
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          })
+            .then((response) => {
+  
+              console.log("Get Sub File:",response)
+              // setVideoID(response.data.video_link)
+            })
+  
       }).catch((error) => {
         //handle error
       });
+      
     
   }
 
