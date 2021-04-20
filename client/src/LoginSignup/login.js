@@ -12,6 +12,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
+import Cookies from 'js-cookie';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link as ReactLink } from "react-router-dom";
 const axios = require('axios')
@@ -78,7 +79,9 @@ export default function SignInSide() {
         if(response.status==400){
           alert("Invalid Email/Password");
         }
-        let token=response.data.token;
+        let token=response.data.token
+        document.cookie=token.toString();
+        console.log("Token",document.cookie)
         let user_type=response.data.user_type;
         if(user_type=='admin'){
           console.log("Logged in as Admin");
