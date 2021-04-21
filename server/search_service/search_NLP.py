@@ -33,7 +33,7 @@ def NLP(file_path,search_query):
     for x in f:
         file_contents.append(x)
 
-    print(file_contents)
+    # print(file_contents)
 
     i=2
     while i<len(file_contents):
@@ -107,8 +107,8 @@ def NLP(file_path,search_query):
         if current_leven < leven_score:
             leven_score = current_leven
             leven_ind = i
-    print("Leven:",sentences[leven_ind])
-    print("Leven:",time_stamp[leven_ind])
+    # print("Leven:",sentences[leven_ind])
+    # print("Leven:",time_stamp[leven_ind])
 
     result["result-3"] = sentences[leven_ind]
     result["time-stamp-3"] = time_stamp[leven_ind]

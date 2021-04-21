@@ -22,7 +22,7 @@ router.post('/',async (req, res) => {
         addSearchQueryToHistory(sub_id,search_text).then(
             val => {
                 console.log(val)
-                res.status(200).send({ 'result' : data})
+                res.status(200).send({ 'result' : data.toString()})
             }
         ).catch(
             error => {
