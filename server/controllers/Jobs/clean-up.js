@@ -7,21 +7,22 @@ const tmpPath = process.env.TMP_PATH || '../../tmp';
 
 module.exports = function(jobID){
 
-	return new Promise( (resolve) => {
+	return new Promise( (resolve, reject) => {
 
 		rimraf(`${tmpPath}/${jobID}`, function(){
-			rimraf(`${tmpPath}/_${jobID}`, function(){
-				rimraf(`${tmpPath}/__${jobID}`, resolve);
+			rimraf(`${tmpPath}/${jobID}.wav`, function(){
+				rimraf(`${tmpPath}/_${jobID}`, function(){
+					rimraf(`${tmpPath}/__${jobID}`, resolve);
+				});
 			});
 		});
 
 		S3_Service.deleteObject(`${tempPath}/${jobID}`)
 			.catch(err => {
-				debug(err);
+				console.log(err);
 			})
 		;
 
 	})
-	.catch(err => debug(err));
 
 }

@@ -5,6 +5,7 @@ const audio_transcribe = require("../AudioTranscription/audio_transcribe");
 const getTimeIndexes = require("../AudioProcessing/media_info");
 const generateSubtitles = require('../SubsFileGeneration/gen_sub_file');
 const tempPath = process.env.TMP_PATH || './server/tmp';
+const cleanUp = require('./clean-up');
 const filePathCreater = require('../../middleware/upload_middleware.js').getUploadS3PathOfVtt
 
 
@@ -101,8 +102,8 @@ class Job{
                  } catch (err) {
                    console.error(err)
                  }
+                 cleanUp(this.id);
                 return subs
-                // TODO: Clean Up this.id
 
             }).then((subs)=>{
                 const data = filePathCreater(this.id,'.vtt');
@@ -124,7 +125,7 @@ class Job{
         .catch(error => {
             console.log(error);
             this.failed = true;
-            // TODO: Clean Up this.id 
+            cleanUp(this.id); 
         });
     }
 
