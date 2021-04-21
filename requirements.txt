@@ -1,0 +1,5 @@
+python-Levenshtein
+numpy
+scikit-learn
+pandas
+nltk
