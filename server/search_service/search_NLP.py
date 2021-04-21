@@ -118,6 +118,6 @@ def NLP(file_path,search_query):
     print(json_result)
     return json_result
 
-file_path = "transcribed_text.vtt"
+file_path = "./server/search_service/transcribed_text.vtt"
 search_query = "Institute rules for passing this course is 30%"
 NLP(file_path,search_query)
