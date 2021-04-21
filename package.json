@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "set NODE_ENV=dev && node app.js",
-    "heroku-postbuild": "pip install -r server/search_service/requirements.txt && cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "Praful Gupta",
   "license": "MIT",
