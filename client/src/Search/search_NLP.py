@@ -10,7 +10,7 @@ import json
 # from polyfuzz import PolyFuzz
 import Levenshtein
 
-nltk.download("stopwords")
+# nltk.download("stopwords")
 from nltk.corpus import stopwords
 stopwords=stopwords.words("english")
 

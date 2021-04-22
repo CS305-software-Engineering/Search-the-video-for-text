@@ -9,6 +9,7 @@ import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import { useHistory } from "react-router-dom";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import FormData from "form-data";
@@ -56,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HomePage() {
   const classes = useStyles();
+  const history = useHistory();
   const [loading,setLoading] = useState(false)
   const [videoID,setVideoID] = useState("https://www.youtube.com/embed/rokGy0huYEA")
   const [selectedFile , setselectedFile] = useState(null)
@@ -104,28 +106,32 @@ export default function HomePage() {
             console.log("Streaming Link Response:",response)
             setVideoID(response.data.video_link)
           })
-    
-          axios.get("https://search-the-video-for-text-soft.herokuapp.com/api/v1/get_sub_file", {
-            headers: {
-              'accept': 'application/json',
-              'Accept-Language': 'en-US,en;q=0.8',
-              "x-access-token": document.cookie,
-              "jobID":job_id,
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          })
-            .then((response) => {
+          .then(()=>{
+            var currentTime = new Date().getTime();
+
+            while (currentTime + 65000 >= new Date().getTime()){}
   
-              console.log("Get Sub File:",response)
-              fetch("https://user-upload-videos-iitrpr.s3.us-east-2.amazonaws.com/transcripts/1618938340830.vtt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAX3SYYYONOAN3DHMX%2F20210420%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20210420T170542Z&X-Amz-Expires=604800&X-Amz-Signature=8c7e2f4c3f736e293380b774e49be7a867cc1ec4939e02ea84c23246337e1755&X-Amz-SignedHeaders=host")
-              .then((response) => {
-                console.log(response)
+      
+            axios.get("https://search-the-video-for-text-soft.herokuapp.com/api/v1/get_sub_file", {
+              headers: {
+                'accept': 'application/json',
+                'Accept-Language': 'en-US,en;q=0.8',
+                "x-access-token": document.cookie,
+                "jobID":job_id,
+                'Content-Type': 'application/x-www-form-urlencoded'
               }
-              
-              )
-              setLoading(false)
-              // setVideoID(response.data.video_link)
             })
+              .then((response) => {
+    
+                console.log("Get Sub File:",response)
+                setLoading(false)
+                // setVideoID(response.data.video_link)
+              })
+  
+
+          })
+          
+
           
             
   
@@ -189,10 +195,19 @@ export default function HomePage() {
             id="formGroupExampleInput"/>
     </div>
     <Button
+    variant="contained"
+    color="primary"
+    style={{marginLeft:"800px",marginTop:"900px"}}
+    className={classes.submit}
+    onClick={()=>(history.push("/vhistory"))}
+    >
+      History
+    </Button>
+    <Button
             //type="submit"
             variant="contained"
             color="primary"
-            style={{marginLeft:"870px",marginTop:"900px"}}
+            style={{marginLeft:"20px",marginTop:"900px"}}
             className={classes.submit}
           >
             {
