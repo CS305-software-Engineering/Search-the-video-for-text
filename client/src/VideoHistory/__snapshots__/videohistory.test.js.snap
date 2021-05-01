@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should render Homepage  should render correctly  1`] = `
+<div
+  className="App"
+>
+  <h1>
+    Previously searched videos
+  </h1>
+  <h2>
+    Click on a video to play it!!
+  </h2>
+  <div>
+    <button
+      className="fetch-button"
+      onClick={[Function]}
+    >
+      Fetch Video History
+    </button>
+    <br />
+  </div>
+  <div
+    className="videos"
+  />
+</div>
+`;

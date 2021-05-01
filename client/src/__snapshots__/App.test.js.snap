@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should render App  should render correctly  1`] = `
+<BrowserRouter>
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/home"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/vhistory"
+  />
+</BrowserRouter>
+`;

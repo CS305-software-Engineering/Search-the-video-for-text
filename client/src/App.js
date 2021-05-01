@@ -7,7 +7,6 @@ import VideoHistory from "./VideoHistory/videohistory.js";
 const App = () => {
   return (
     <Router >
-
       <Route exact path="/" component={SignInSide} />
       <Route exact path="/home" component={HomePage} />
       <Route exact path="/vhistory" component={VideoHistory} />
