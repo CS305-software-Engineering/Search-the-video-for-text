@@ -10,8 +10,8 @@
 }
  html, body {
 	 height: 100%;
-	 background: radial-gradient(#003, #000);
-	 overflow: hidden;
+	 background: linear-gradient(180deg, #283E51 0%, #0A2342 100%);
+	 overflow: auto;
 	 color: #fff;
 	 font-family: 'Open Sans';
 	 font-size: 18px;
@@ -107,3 +107,30 @@
 	text-align: center;
 	width: 60%;
 }
+
+.topnav {
+	background-color:linear-gradient(90deg, #283E51 0%, #0A2342 100%);
+	overflow: hidden;
+  }
+  
+  /* Style the links inside the navigation bar */
+  .topnav a {
+	float: left;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+	font-size: 17px;
+  }
+  
+  /* Change the color of links on hover */
+  .topnav a:hover {
+	background-color: #ddd;
+	color: black;
+  }
+  
+  /* Add a color to the active/current link */
+  .topnav a.active {
+	background-color: #3f51b5;
+	color: white;
+  }

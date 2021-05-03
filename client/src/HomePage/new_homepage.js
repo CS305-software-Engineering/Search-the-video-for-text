@@ -25,12 +25,15 @@ export default function HomePage() {
     const [loading,setLoading] = useState(false)
     const [videoID,setVideoID] = useState("https://www.youtube.com/embed/rokGy0huYEA")
     const [selectedFile , setselectedFile] = useState(null)
+    const [searchText, setSearchText] = useState("")
+    const [vttFile, setVTT] = useState("WEBVTT")
     const [isDone,setIsDone] = useState(false)
     const uploadHandler = ()=> {
       console.log("uploading" , selectedFile);
       if(selectedFile == null) return;
   
       setLoading(true);
+      console.log(searchText)
   
       let data = new FormData();
       data.append('file', selectedFile, selectedFile.name);
@@ -70,25 +73,25 @@ export default function HomePage() {
               console.log("Streaming Link Response:",response)
               setVideoID(response.data.video_link)
             })
-      
-            axios.get("https://search-the-video-for-text-soft.herokuapp.com/api/v1/get_sub_file", {
+            console.log([job_id])
+            const subBody = {
+                jobID:job_id
+            }
+            axios.post("https://search-the-video-for-text-soft.herokuapp.com/api/v1/get_sub_file", qs.stringify(subBody), {
               headers: {
                 'accept': 'application/json',
                 'Accept-Language': 'en-US,en;q=0.8',
                 "x-access-token": document.cookie,
-                "jobID":job_id,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/x-www-form-urlencoded'
               }
             })
               .then((response) => {
     
                 console.log("Get Sub File:",response)
-                fetch("https://user-upload-videos-iitrpr.s3.us-east-2.amazonaws.com/transcripts/1618938340830.vtt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAX3SYYYONOAN3DHMX%2F20210420%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20210420T170542Z&X-Amz-Expires=604800&X-Amz-Signature=8c7e2f4c3f736e293380b774e49be7a867cc1ec4939e02ea84c23246337e1755&X-Amz-SignedHeaders=host")
-                .then((response) => {
-                  console.log(response)
-                }
-                
-                )
+                const searchBody = {
+                    sub_id: job_id,
+                    search_text: searchText
+                };
                 setLoading(false)
                 // setVideoID(response.data.video_link)
               })
@@ -98,15 +101,20 @@ export default function HomePage() {
         }).catch((error) => {
           //handle error
         });
-        
-      
+              
     }
     return (
-        <div style={{width: "100%", height:"100vh", display: "flex",flexDirection: "column",alignContent: "center",justifyContent: "center",background: "linear-gradient(180deg, #283E51 0%, #0A2342 100%)"}}>
-            <div style={{padding: "1%", border: "0px solid black",borderRadius: "10px", width: "70%", marginLeft: "15%", marginTop: "10px"}}>
-                <Button variant = "contained" href = "http://localhost:3000/home" color = "secondary">Video History</Button>
-                <div style={{padding: "1%", width: "100%", boxShadow: "0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)",display: "flex", justifyContent:"center",margin: "10px 0px" }}>
-                    <iframe width = "95%" height="500" src = {videoID} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title="Embedded youtube"></iframe>
+        <div style={{width: "100%", overflow:"auto", display: "flex",flexDirection: "column",alignContent: "center",justifyContent: "center"}}>
+            <div style={{padding: "0px", border: "0px solid black", width: "100%"}}>
+                <div class="topnav" marginLeft= "30%">
+                    <a class="active" href="#home">Home</a>
+                    <a href="https://www.google.com">Video History</a>
+                </div>
+            </div>
+            <div style={{padding: "1%", border: "0px solid black",borderRadius: "10px", width: "60%", marginLeft: "20%", marginTop: "10px"}}>
+                
+                <div style={{padding: "0%", width: "100%", boxShadow: "0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)",display: "flex", justifyContent:"center",margin: "10px 0px" }}>
+                    <iframe width = "100%" height="535" src = {videoID} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title="Embedded youtube"><track default kind = "captions" srclang = "en" src = "../../../server/search_service/transcribed_text.vtt"></track></iframe>
                 </div>
                 <div style={{padding: "1%", width: "100%",display: "flex", justifyContent:"center",margin: "10px 0px"  }}>
                     <Button variant="contained" color="primary" component = "label"><input id="inputFile" hidden type="file"
@@ -120,7 +128,7 @@ export default function HomePage() {
                         }/>Upload File
                     </Button>
                 </div>
-                <div style={{padding: "1%", width: "100%",display: "flex", justifyContent:"center",margin: "10px 0px"  }}>
+                <div style={{padding: "0%", width: "100%",display: "flex", justifyContent:"center",margin: "10px 0px"  }}>
                     <input type="text" className="form-control" padding = "1%" id="formGroupExampleInput" placeholder = "Search Text"/>
                 </div>
                 <div style={{padding: "1%", width: "100%",display: "flex", justifyContent:"center",margin: "10px 0px"  }}>
@@ -128,6 +136,10 @@ export default function HomePage() {
                         <div
                             onClick={async ()=>{
                             setLoading(true)
+                            var sentence = document.getElementById("formGroupExampleInput").value;
+                            setSearchText(sentence);
+                            console.log("Next");
+                            console.log(searchText);
                             uploadHandler();
                             }}>
                             Search
