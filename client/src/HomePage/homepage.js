@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -55,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+
 export default function HomePage() {
   const classes = useStyles();
   const history = useHistory();
@@ -63,6 +64,25 @@ export default function HomePage() {
   const [selectedFile , setselectedFile] = useState(null)
   const [isDone,setIsDone] = useState(false)
   const [searchText,setSearchText] = useState("")
+  const [width, setWindowWidth] = useState(0)
+   useEffect(() => { 
+
+     updateDimensions();
+
+     window.addEventListener('resize', updateDimensions);
+     return () => 
+       window.removeEventListener('resize',updateDimensions);
+    }, [])
+    const updateDimensions = () => {
+      var width = window.innerWidth
+      if(width < 1000){
+        width = window.innerWidth*0.85
+      }
+      else{
+        width = 850
+      }
+      setWindowWidth(width)
+    }
   const uploadHandler = ()=> {
     console.log("uploading" , selectedFile);
     if(selectedFile == null) return;
@@ -150,12 +170,12 @@ export default function HomePage() {
         
         <div class="box" id="box">
           <div class="box-inner" id="box-inner">
-        <div>
+        <div style = {{padding:"1%", display:"flex", flexDirection:"column", justifyContent:"center"}}>
         {/* <YouTubePlayer style={{border:"1px solid black"}} url='https://www.youtube.com/watch?v=d46Azg3Pm4c'/> */}
         <iframe
-        style={{marginLeft:"20px",marginTop:"20px"}}
-        width="853"
-        height="480"
+        // style={{marginLeft:"20px",marginTop:"20px"}}
+        width={width} /*widht = "50vw"*/
+        height="480" /* height = "25vh"*/
         src={videoID}
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -167,7 +187,7 @@ export default function HomePage() {
         </div>
 
         <div className="form-group" class="box2">
-          <label htmlFor="formGroupExampleInput" style={{marginLeft:"350px"}}>Video&emsp;&emsp;&emsp;</label>
+          <label htmlFor="formGroupExampleInput" style={{marginLeft:"40%"}}>Video&emsp;&emsp;&emsp;</label>
           <Button
               variant="contained"
               component="label"
@@ -189,7 +209,7 @@ export default function HomePage() {
     </div>
 
     <div className="form-group" class="box3">
-          <label htmlFor="formGroupExampleInput" style={{marginLeft:"340px"}}>Search Text&emsp;</label>
+          <label htmlFor="formGroupExampleInput" style={{marginLeft:"38%"}}>Search Text&emsp;</label>
           <input
             onChange={(event)=>(setSearchText(event.target.value))}
             type="text"

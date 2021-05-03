@@ -1,21 +1,42 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./videohistory.css";
+const qs = require('querystring');
 export default function VideoHistory() {
     const [videos, setvideos] = useState(null);
-
     const fetchData = async () => {
         const config = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI5YzdkYzhjNC1iOWVkLTQxNTQtOTM1YS1mNTNjMDAwYTFmY2MiLCJpYXQiOjE2MTg4NDc3MTAsImV4cCI6MTYxOTQ1MjUxMH0.37Xk5wFQO4TAuxfVqDPME0g42uc9ArtOBJj7sLUUNhU'// + token //the token is a variable which holds the token
+                'x-access-token': document.cookie// + token //the token is a variable which holds the token
             }
         }
         const response = await axios.get(
             'https://search-the-video-for-text-soft.herokuapp.com/api/v1/get_my_history'
             , config);
         console.log(response.data);
-
+        for(let i=0; i<response.data.length; i++) {
+            console.log(response.data[i].video_id);
+            const body = {video_id: response.data[i].video_id};
+            const local_config = {
+                headers: config.headers,
+                body: body,
+            };
+            try{
+                console.log("body");
+                console.log(body);
+                console.log("config");
+                console.log(config);
+                const res = await axios.post(
+                    'https://search-the-video-for-text-soft.herokuapp.com/api/v1/get_video_streaming_link',
+                    qs.stringify(body),
+                    config
+                );
+                response.data[i].link = res.data.video_link;
+            } catch(err) {
+                console.log(err);
+            }
+        }
         setvideos(response.data);
     };
 
@@ -38,17 +59,17 @@ export default function VideoHistory() {
                     videos.map((video, index) => {
                         const cleanedDate = new Date(video.date_created).toDateString();
                         //const authors = video.authors.join(", ");
-
+                        console.log(video.link);
                         return (
                             <div className="video" key={index}>
                                 <h3>video {index + 1}</h3>
                                 <h2>{video.file_name}</h2>
                                 
-                                <iframe
+                                <video
                                     style={{ marginLeft: "20px", marginTop: "20px" }}
                                     width = "60%"
                                     
-                                    src={`https://www.youtube.com/embed/rokGy0huYEA`}
+                                    src={video.link}
                                     frameBorder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen

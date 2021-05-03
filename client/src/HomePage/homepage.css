@@ -15,6 +15,7 @@
 	 color: #fff;
 	 font-family: 'Open Sans';
 	 font-size: 18px;
+	 
 }
  h1 {
 	 font-weight: 700;
@@ -22,7 +23,7 @@
 }
 .box2{
     position: absolute;
-    top: 80%;
+    top: 89%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
     background-color: rgba(0, 0, 0, 0.5);
@@ -30,11 +31,10 @@
     max-width: 1000px;
     padding: 5px;
     border: 2px solid #b78846;
-
 }
 .box3{
     position: absolute;
-    top: 85%;
+    top: 95%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
     background-color: rgba(0, 0, 0, 0.5);
@@ -98,3 +98,12 @@
 	 right: -2px;
 }
  
+.form-control{
+	padding: .5rem;   
+	font-size: 16px;  
+	display: block;   
+	border-radius: 4px;   
+	border: 1px solid black;
+	text-align: center;
+	width: 60%;
+}
