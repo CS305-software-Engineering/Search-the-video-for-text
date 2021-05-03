@@ -87,13 +87,13 @@ function checkJobs(){
 
 }
 
-setInterval(checkJobs, 1000);
-setInterval(workThroughQueue, 5000);
 
 module.exports = {
 	create : createJob,
     get: getJob,
     check: checkJob,
     number: numberOfJobsInProgress,
-    max: maxJob
+    max: maxJob,
+    work: workThroughQueue,
+    checkJobs: checkJobs,
 };
