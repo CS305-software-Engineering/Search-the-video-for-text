@@ -8,7 +8,7 @@ export default function VideoHistory() {
         const config = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYzVkZTYyYi0zMzJhLTQyZTAtOGY1Zi04ODg4MzBlZmFiM2QiLCJpYXQiOjE2MjAwMjc0MTksImV4cCI6MTYyMDYzMjIxOX0.Y5hErwGdCrfeo2hZ0uGl5y1gIz-EYjv-Tu7opDIUFyA'// + token //the token is a variable which holds the token
+                'x-access-token': document.cookie// + token //the token is a variable which holds the token
             }
         }
         const response = await axios.get(
@@ -69,7 +69,7 @@ export default function VideoHistory() {
                                     style={{ marginLeft: "20px", marginTop: "20px" }}
                                     width = "60%"
                                     
-                                    src={"https://user-upload-videos-iitrpr.s3.us-east-2.amazonaws.com/videos/9c7dc8c4-b9ed-4154-935a-f53c000a1fcc/05b5fcea-8736-4cd0-8499-ab8e2209963c.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAX3SYYYONN5OJIBE5%2F20210503%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20210503T083441Z&X-Amz-Expires=604800&X-Amz-Signature=975252e9d3b5e2e798dece63acaf8ce2d3165748737a17a3344c9c2640de600c&X-Amz-SignedHeaders=host"}
+                                    src={video.link}
                                     frameBorder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
