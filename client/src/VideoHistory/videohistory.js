@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 import Loader from 'react-loader-spinner'
 import "./videohistory.css";
+import { useHistory } from "react-router-dom";
+import HomePage from "../HomePage/homepage";
+
 const qs = require('querystring');
 export default function VideoHistory() {
     const [videos, setvideos] = useState(null);
     const [loaded,setLoaded] = useState(true)
+    const history = useHistory();
     const fetchData = async () => {
         setLoaded(false)
         const config = {
@@ -45,6 +49,11 @@ export default function VideoHistory() {
     };
 
     return (
+        <>
+        <div class="topnav" marginLeft= "30%" marginTop= "-20%">
+            <a onClick={()=>(history.push("/home"))}>Home</a>
+            <a class="active">Video History</a>
+        </div>
         <div className="App">
             <h1>Previously searched videos</h1>
             <h2>Click on a video to play it!!</h2>
@@ -75,13 +84,13 @@ export default function VideoHistory() {
                     videos.map((video, index) => {
                         const cleanedDate = new Date(video.date_created).toDateString();
                         //const authors = video.authors.join(", ");
-                        console.log(video.link);
+                        console.log("Vobj",video);
                         return (
-                            <div className="video" key={index}>
+                            <div className="video" key={index} style={{marginLeft:"25px"}}>
                                 <h3>video {index + 1}</h3>
                                 <h2>{video.file_name}</h2>
                                 
-                                <video
+                                <iframe
                                     style={{ marginLeft: "20px", marginTop: "20px" }}
                                     width = "60%"
                                     
@@ -91,8 +100,14 @@ export default function VideoHistory() {
                                     allowFullScreen
                                     title="Embedded youtube"
                                 />
-                                
-                                <button className="fetch-button" onClick={fetchData}>
+                                <br/>
+                                <button 
+                                className="fetch-button" onClick={()=>(
+                                    history.push({
+                                    pathname:"/home",
+                                    state:{video_obj:video}
+                                }))}
+                                >
                                     Click here Search in This Video
                                 </button>
                                 <div className="details">
@@ -107,6 +122,7 @@ export default function VideoHistory() {
 
             {/* <ScotchInfoBar seriesNumber="7" /> */}
         </div>
+        </>
     );
 }
 

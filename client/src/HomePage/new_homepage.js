@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import FormData from "form-data";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import { Link as ReactLink } from "react-router-dom";
 import YouTubePlayer from "react-player/lib/players/YouTube";
@@ -19,6 +20,7 @@ import './homepage.css';
 import Loader from 'react-loader-spinner'
 import axios from "axios"
 import { Input } from '@material-ui/core';
+import { useLocation } from "react-router-dom";
 const qs = require('querystring')
 
 export default function HomePage() {
@@ -26,15 +28,55 @@ export default function HomePage() {
     const [videoID,setVideoID] = useState("https://www.youtube.com/embed/rokGy0huYEA")
     const [selectedFile , setselectedFile] = useState(null)
     const [searchText, setSearchText] = useState("")
+    const history = useHistory();
+    const location = useLocation();
     const [vttFile, setVTT] = useState("WEBVTT")
     const [isDone,setIsDone] = useState(false)
+    const [subID,setSubID] = useState(0)
+
+    useEffect(()=>{
+      console.log("pname:",location.pathname)
+      if(location.state.video_obj)
+      {
+      console.log("pname:",location.state.video_obj)
+      setVideoID(location.state.video_obj.link)
+      setSubID(location.state.video_obj.sub_id)
+      }
+    })
+
     const uploadHandler = ()=> {
       console.log("uploading" , selectedFile);
-      if(selectedFile == null) return;
-  
       setLoading(true);
-      console.log(searchText)
-  
+      if(selectedFile == null || subID != 0) 
+      {
+        console.log("In Else")
+        const subBody = {
+          jobID:subID
+        }
+
+        axios.post("https://search-the-video-for-text-soft.herokuapp.com/api/v1/get_sub_file", qs.stringify(subBody), {
+          headers: {
+            'accept': 'application/json',
+            'Accept-Language': 'en-US,en;q=0.8',
+            "x-access-token": document.cookie,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        })
+          .then((response) => {
+
+            console.log("Get Sub File:",response)
+            setLoading(false)
+            // setVideoID(response.data.video_link)
+          })
+
+      }
+
+      // setLoading(true);
+      // console.log(searchText)
+      
+      if(subID === 0)
+      {
+      console.log("In If")
       let data = new FormData();
       data.append('file', selectedFile, selectedFile.name);
   
@@ -95,20 +137,20 @@ export default function HomePage() {
                 setLoading(false)
                 // setVideoID(response.data.video_link)
               })
-            
-              
-    
+
         }).catch((error) => {
           //handle error
         });
-              
+      }
+      
+
     }
     return (
         <div style={{width: "100%", overflow:"auto", display: "flex",flexDirection: "column",alignContent: "center",justifyContent: "center"}}>
             <div style={{padding: "0px", border: "0px solid black", width: "100%"}}>
                 <div class="topnav" marginLeft= "30%">
-                    <a class="active" href="#home">Home</a>
-                    <a href="https://www.google.com">Video History</a>
+                    <a class="active">Home</a>
+                    <a onClick={()=>(history.push("/vhistory"))}>Video History</a>
                 </div>
             </div>
             <div style={{padding: "1%", border: "0px solid black",borderRadius: "10px", width: "60%", marginLeft: "20%", marginTop: "10px"}}>
