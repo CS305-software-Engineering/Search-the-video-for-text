@@ -26,14 +26,16 @@ router.post('/', (req, res) => {
             console.log(err)
             console.log('Could Not Fetch File From Amazon Bucket');
             this.failed = true;
-            res.status(404);
+            res.status(450);
             res.json({
                 status: 'error',
                 message: `Could not find a job with the ID ${jobID} or the job hasn't finished yet`
             });
 
 
-        });
+        }
+        
+    );
 
 
 
