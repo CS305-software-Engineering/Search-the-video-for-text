@@ -7,8 +7,11 @@ const generateSubtitles = require('../controllers/SubsFileGeneration/gen_sub_fil
 const S3_Service = require("../controllers/Storage Service/s3_bucket_operations.js")
 router.use(Auth.verifyToken)
 
-router.get('/', (req, res) => {
-    const jobID = req.headers['jobid'];
+router.post('/', (req, res) => {
+    const jobID = req.body.jobID
+    // body['jobID'];
+    console.log("received request to get sub file for job");
+    console.log(jobID);
     const job = jobs.get(jobID);
     const asSubtitleFile = req.query.output === 'vtt' || req.query.output === 'srt';
 
