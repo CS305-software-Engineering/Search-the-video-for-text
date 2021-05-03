@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Loader from 'react-loader-spinner'
 import "./videohistory.css";
 const qs = require('querystring');
 export default function VideoHistory() {
     const [videos, setvideos] = useState(null);
+    const [loaded,setLoaded] = useState(true)
     const fetchData = async () => {
+        setLoaded(false)
         const config = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -38,6 +41,7 @@ export default function VideoHistory() {
             }
         }
         setvideos(response.data);
+        setLoaded(true)
     };
 
     return (
@@ -47,9 +51,21 @@ export default function VideoHistory() {
 
             {/* Fetch data from API */}
             <div>
-                <button className="fetch-button" onClick={fetchData}>
+                {
+                loaded?
+                <button className="fetch-button" onClick={fetchData}>                
                     Fetch Video History
                 </button>
+                :
+            <Loader
+                type="Puff"
+                color="#00BFFF"
+                height={100}
+                width={100}
+                //timeout={3000} //3 secs
+            />
+
+                }
                 <br />
             </div>
 

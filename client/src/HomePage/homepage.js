@@ -133,7 +133,7 @@ export default function HomePage() {
             while (currentTime + 5000 >= new Date().getTime()){}
   
       
-            axios.get("https://search-the-video-for-text-soft.herokuapp.com/api/v1/get_sub_file", {
+            axios.post("https://search-the-video-for-text-soft.herokuapp.com/api/v1/get_sub_file", {
               headers: {
                 'accept': 'application/json',
                 'Accept-Language': 'en-US,en;q=0.8',
