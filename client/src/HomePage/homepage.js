@@ -62,6 +62,7 @@ export default function HomePage() {
   const [videoID,setVideoID] = useState("https://www.youtube.com/embed/rokGy0huYEA")
   const [selectedFile , setselectedFile] = useState(null)
   const [isDone,setIsDone] = useState(false)
+  const [searchText,setSearchText] = useState("")
   const uploadHandler = ()=> {
     console.log("uploading" , selectedFile);
     if(selectedFile == null) return;
@@ -109,7 +110,7 @@ export default function HomePage() {
           .then(()=>{
             var currentTime = new Date().getTime();
 
-            while (currentTime + 65000 >= new Date().getTime()){}
+            while (currentTime + 5000 >= new Date().getTime()){}
   
       
             axios.get("https://search-the-video-for-text-soft.herokuapp.com/api/v1/get_sub_file", {
@@ -190,6 +191,7 @@ export default function HomePage() {
     <div className="form-group" class="box3">
           <label htmlFor="formGroupExampleInput" style={{marginLeft:"340px"}}>Search Text&emsp;</label>
           <input
+            onChange={(event)=>(setSearchText(event.target.value))}
             type="text"
             className="form-control"
             id="formGroupExampleInput"/>
