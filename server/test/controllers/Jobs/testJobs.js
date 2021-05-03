@@ -1,10 +1,12 @@
 const { expect } = require('chai');
 var fs = require('fs');
+const supressLogs = require('mocha-suppress-logs');
 
 var jobHandler = require('../../../controllers/Jobs/jobs');
 var cleanUp = require('../../../controllers/Jobs/clean-up');
 
 describe("Jobs", function(){
+    supressLogs();
     describe("Job Handler", function(){
 
         it("Should Create Job Successfully and Save File in tmp", async function(){
