@@ -258,7 +258,7 @@ export default function SignInSide() {
                 ""
                 :
                 <Link href="#" variant="body2">
-                  Forgot password?
+                  {/* Forgot password? */}
                 </Link>
                 }
               </Grid>
