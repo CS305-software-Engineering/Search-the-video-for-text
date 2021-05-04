@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
 
 
             var spawn = require("child_process").spawn;
-            var search_process = spawn('python3', ["./server/search_service/search_NLP.py", search_text, vtt_file])//"-i./../database/public/uploads/"+req.body.fname ] ); 
+            var search_process = spawn('python3', ["./server/search_service/search_NLP.py", vtt_file, search_text])//"-i./../database/public/uploads/"+req.body.fname ] ); 
             search_process.stdout.on('data', function (data) {
 
                 console.log(data.toString());
