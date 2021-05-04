@@ -37,7 +37,7 @@ def NLP(file_path, search_query):
     #for x in f:
     #    file_contents.append(x)
 
-    # print(file_contents)
+    print(file_contents)
 
     i = 2
     while i < len(file_contents):
@@ -119,7 +119,7 @@ def NLP(file_path, search_query):
     result["time-stamp-3"] = time_stamp[leven_ind]
 
     json_result = json.dumps(result)
-    print(json_result)
+    #print(json_result)
     return json_result
 
 
