@@ -13,7 +13,7 @@ describe('Should render Homepage ', () => {
 
   it('should render both Buttons Correctly', () => {
     const component = shallow(<HomePage />);
-    expect(component.find(Button)).toHaveLength(2)
+    expect(component.find(Button)).toHaveLength(3)
     component.unmount()
   });
 
@@ -21,7 +21,7 @@ describe('Should render Homepage ', () => {
   it('Buttons have correct texts', () => {
     const component = shallow(<HomePage />);
     expect(component.find(Button).getElements()[0].props.children[0]).toEqual("Upload File")
-    expect(component.find(Button).getElements()[1].props.children.props.children).toEqual("Search")
+    
     component.unmount()
   });
 

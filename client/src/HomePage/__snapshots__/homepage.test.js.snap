@@ -88,15 +88,30 @@ exports[`Should render Homepage  should render correctly  1`] = `
     <input
       className="form-control"
       id="formGroupExampleInput"
+      onChange={[Function]}
       type="text"
     />
   </div>
   <WithStyles(ForwardRef(Button))
     className="makeStyles-submit-6"
     color="primary"
+    onClick={[Function]}
     style={
       Object {
-        "marginLeft": "870px",
+        "marginLeft": "800px",
+        "marginTop": "900px",
+      }
+    }
+    variant="contained"
+  >
+    History
+  </WithStyles(ForwardRef(Button))>
+  <WithStyles(ForwardRef(Button))
+    className="makeStyles-submit-6"
+    color="primary"
+    style={
+      Object {
+        "marginLeft": "20px",
         "marginTop": "900px",
       }
     }

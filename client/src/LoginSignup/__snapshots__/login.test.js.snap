@@ -411,9 +411,7 @@ exports[`Should render SignInSide  should render correctly  1`] = `
             <WithStyles(ForwardRef(Link))
               href="#"
               variant="body2"
-            >
-              Forgot password?
-            </WithStyles(ForwardRef(Link))>
+            />
           </WithStyles(ForwardRef(Grid))>
           <WithStyles(ForwardRef(Grid))
             item={true}
