@@ -53,7 +53,7 @@ module.exports = function (transcripts, isSRT = false) {
 	//transcripts = transcripts.slice(0, transcripts.length)
 	// if (transcripts[0] !== Object)
 	// 	return Promise.reject("Input not acceptable");
-	console.log(transcripts)
+	//console.log(transcripts)
 	transcripts.forEach((trans, i) => {
 		const subContent = (i + 1) + "\n" + SecToStdFormat(trans.start, isSRT) + " --> " + SecToStdFormat(trans.end, isSRT) + "\n" + trans.transcription + "\n\n";
 		sub += subContent;

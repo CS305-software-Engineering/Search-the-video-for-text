@@ -99,7 +99,6 @@ module.exports =
 			try { fs.readFileSync(value) }
 			catch (err) {
 				//console.log("file not found")
-
 				wrong_file_flag = true;
 			}
 
