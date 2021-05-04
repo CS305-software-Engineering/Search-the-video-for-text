@@ -55,7 +55,6 @@ export default function HomePage() {
     const uploadHandler = ()=> {
       console.log("uploading" , selectedFile);
       setLoading(true);
-      setID([])
       if(selectedFile == null || subID != 0) 
       {
         console.log("In Else")
