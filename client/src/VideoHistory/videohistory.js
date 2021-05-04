@@ -22,14 +22,14 @@ export default function VideoHistory() {
             'https://search-the-video-for-text-soft.herokuapp.com/api/v1/get_my_history'
             , config);
         console.log(response.data);
-        for(let i=0; i<response.data.length; i++) {
+        for (let i = 0; i < response.data.length; i++) {
             console.log(response.data[i].video_id);
-            const body = {video_id: response.data[i].video_id};
+            const body = { video_id: response.data[i].video_id };
             const local_config = {
                 headers: config.headers,
                 body: body,
             };
-            try{
+            try {
                 console.log("body");
                 console.log(body);
                 console.log("config");
@@ -40,7 +40,7 @@ export default function VideoHistory() {
                     config
                 );
                 response.data[i].link = res.data.video_link;
-            } catch(err) {
+            } catch (err) {
                 console.log(err);
             }
         }
@@ -89,12 +89,14 @@ export default function VideoHistory() {
                             <div className="video" key={index} style={{marginLeft:"25px"}}>
                                 <h3>video {index + 1}</h3>
                                 <h2>{video.file_name}</h2>
+
                                 
                                 <iframe
                                     style={{ marginLeft: "20px", marginTop: "20px" }}
                                     width = "60%"
                                     
                                     src={video.link}
+
                                     frameBorder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
@@ -108,6 +110,7 @@ export default function VideoHistory() {
                                     state:{video_obj:video}
                                 }))}
                                 >
+
                                     Click here Search in This Video
                                 </button>
                                 <div className="details">

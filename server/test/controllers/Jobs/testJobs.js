@@ -1,9 +1,10 @@
 const { expect } = require('chai');
-var fs = require('fs');
+const fs = require('fs');
 const supressLogs = require('mocha-suppress-logs');
 
-var jobHandler = require('../../../controllers/Jobs/jobs');
-var cleanUp = require('../../../controllers/Jobs/clean-up');
+const jobHandler = require('../../../controllers/Jobs/jobs');
+const cleanUp = require('../../../controllers/Jobs/clean-up');
+const Job = require('../../../controllers/Jobs/job');
 
 describe("Jobs", function(){
     supressLogs();
@@ -65,5 +66,33 @@ describe("Jobs", function(){
             });
         });
 
+    });
+
+    describe("Job Class", function() {
+        it("Should be able to create an Instance of Job Class", function() {
+            var dummyJobId = 1;
+            var dummyLanguage = 'en-GB';
+            try {
+                var dummyJob = new Job(dummyJobId, dummyLanguage);
+                expect(dummyJob.id).to.be.equal(dummyJobId);
+                expect(dummyJob.lng).to.be.equal(dummyLanguage);
+                expect(dummyJob.isCompleted).to.be.false;
+                expect(dummyJob.inProgress).to.be.false;
+                expect(dummyJob.transcription).to.be.equal(undefined);
+            } catch (err) {
+                expect(false).to.be.true;
+            }
+        });
+        it("Should Not Start the Process if the video file is not present either on server or AWS Bucket", async function() {
+            var dummyJobId = 1;
+            var dummyLanguage = 'en-GB';
+            var dummyJob = new Job(dummyJobId, dummyLanguage);
+            try {
+                await dummyJob.start();
+                expect(false).to.be.true;
+            } catch (err) {
+                expect(false).to.be.false;
+            }
+        })
     });
 });

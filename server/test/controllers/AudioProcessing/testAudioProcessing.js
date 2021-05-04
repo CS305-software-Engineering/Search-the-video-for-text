@@ -5,6 +5,7 @@ const path = require('path');
 
 const audioExtraction = require('../../../controllers/AudioProcessing/extract_audio');
 const splitAudio = require('../../../controllers/AudioProcessing/split_audio');
+const prepareAudio = require('../../../controllers/AudioProcessing/prepare-audio');
 
 const rmDir = function (dirPath, removeSelf) {
     if (removeSelf === undefined)
@@ -62,7 +63,7 @@ describe("Audio Processing", function(){
             var audioFilePath = 'server/test/controllers/AudioProcessing/assets/aud.wav';
             var dummyJobId = 1;
             try {
-                await splitAudio.atIntervals(audioFilePath, dummyJobId);
+                var filePath = await splitAudio.atIntervals(audioFilePath, dummyJobId);
                 fs.readdir(`server/tmp/`, function(err, list) {
                     if(err) throw err;
                     expect(list.indexOf(`_${dummyJobId}`)).to.not.equal(-1);
@@ -71,18 +72,41 @@ describe("Audio Processing", function(){
                 expect(false).to.be.true;
             }
         });
-        // it("Should Split Audio Based on Silence", async function() {
-        //     var audioFilePath = 'server/test/controllers/AudioProcessing/assets/aud.wav';
-        //     var dummyJobId = 1;
-        //     try {
-        //         await splitAudio.onSilence(audioFilePath, dummyJobId);
-        //         // fs.readdir('server/tmp/', function(err, list) {
-        //         //     if(err) throw err;
-        //         //     expect(list.indexOf(`__${dummyJobId}`)).to.not.equal(-1);
-        //         // });
-        //     } catch(err) {
-        //         expect(false).to.be.true;
-        //     }
-        // }).timeout(10000);
+        it("Should Split Audio Based on Silence", async function() {
+            var audioFilePath = 'server/test/controllers/AudioProcessing/assets/aud.wav';
+            var dummyJobId = 1;
+            try {
+                var filePath = await splitAudio.onSilence(audioFilePath, dummyJobId);
+                expect(filePath.length).to.not.equal(0);
+                fs.readdir('server/tmp/', function(err, list) {
+                    if(err) throw err;
+                    expect(list.indexOf(`__${dummyJobId}`)).to.not.equal(-1);
+                });
+            } catch(err) {
+                expect(false).to.be.true;
+            }
+        }).timeout(10000);
+    });
+    describe("Prepare Audio", function() {
+        it("Should throw an error when given wrong file path (w/o Duration)", async function() {
+            var videoFilePath = "server/test/controllers/AudioProcessing/assets/invalid.mp4";
+            var dummyJobId = 1;
+            try {
+                await prepareAudio(videoFilePath, dummyJobId);
+                expect(true).to.be.false;
+            } catch (err) {
+                expect(true).to.be.true;
+            }
+        });
+        it("Should throw an error when given wrong file path (w/ Duration)", async function() {
+            var videoFilePath = "server/test/controllers/AudioProcessing/assets/invalid.mp4";
+            var dummyJobId = 1;
+            try {
+                await prepareAudio(videoFilePath, dummyJobId, 3);
+                expect(true).to.be.false;
+            } catch (err) {
+                expect(true).to.be.true;
+            }
+        });
     });
 });

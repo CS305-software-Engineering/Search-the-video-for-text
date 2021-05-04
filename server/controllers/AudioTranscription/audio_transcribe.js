@@ -94,7 +94,21 @@ module.exports =
 		if (audioPaths.constructor !== Array) {
 			audioPaths = [audioPaths];
 		}
-		console.time('transcribe');
+		var wrong_file_flag = false
+		audioPaths.forEach(function (value) {
+			try { fs.readFileSync(value) }
+			catch (err) {
+				//console.log("file not found")
+
+				wrong_file_flag = true;
+			}
+
+		});
+		if (wrong_file_flag === true) {
+			return -1;
+		}
+		//console.log("printing ayadf")
+		//console.time('transcribe');
 
 		var result
 		var result_array = [];
