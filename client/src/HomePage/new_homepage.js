@@ -74,7 +74,68 @@ export default function HomePage() {
 
             console.log("Get Sub File:",response)
             setLoading(false)
-            // setVideoID(response.data.video_link)
+            // setVideoID(response.data.video_link)outset(response)
+                      console.log("Get Sub File:",response)
+                      const searchBody = {
+                          sub_id: subID,
+                          search_text: searchText
+                      };
+                      setText(response.data.split ('\n\n').map ((item, i) => {
+                        var v1 = item.indexOf('-->');
+                        if(v1 == -1 && i==0){
+                          return (<div alignContent = "center"><p key = {i}>Captions</p><br></br></div>);
+                        }
+                        if(i == 1){
+                          return <p></p>;
+                        }
+                        var tmp = v1;
+                        while(tmp>=0 && item[tmp]!='\n'){
+                        	tmp -=1;
+                        }
+                        var st = tmp+1;
+                        tmp = v1;
+                        while(tmp<item.length && item[tmp]!='\n'){
+                        	tmp+=1;
+                        }
+                        var en = tmp-1;
+                        var timestamp = item.substring(st,en+1);
+                        var color = "black";
+                        // console.log(timestamp)
+                        setID((old_id)=>{
+                          return [...old_id, timestamp];
+                        })
+                        return (<div><p id = {timestamp}>{item}</p><br></br></div>);
+                      }));
+
+                      //search query here
+                      setLoading(false)
+                      console.log(searchBody);
+                      axios.post("https://search-the-video-for-text-soft.herokuapp.com/api/v1/search_query", qs.stringify(searchBody),{
+                        headers: {
+                          'accept': 'application/json',
+                          'Accept-Language': 'en-US,en;q=0.8',
+                          "x-access-token": document.cookie,
+                          'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                      }).then((response) => {
+                        console.log("idhar aa gaya")
+                        console.log(response.data.result)
+                        var obj = JSON.parse(response.data.result)
+                        var new_id = [obj["time-stamp-1"], obj["time-stamp-2"], obj["time-stamp-3"]]
+                        console.log(ids)
+                        console.log(new_id)
+                        if(document.getElementById(new_id[2])!=null){
+                          document.getElementById(new_id[2]).style.color = "red";
+                        }
+                        if(document.getElementById(new_id[1])!=null){
+                          document.getElementById(new_id[1]).style.color = "blue";
+                        }
+                        if(document.getElementById(new_id[0])!=null){
+                          document.getElementById(new_id[0]).style.color = "green";
+                        }
+                      }).catch((error) =>{
+                        console.log(error)
+                    })
           })
 
       }
