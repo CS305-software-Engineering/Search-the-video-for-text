@@ -189,13 +189,13 @@ export default function HomePage() {
                         var new_id = [obj["time-stamp-1"], obj["time-stamp-2"], obj["time-stamp-3"]]
                         console.log(ids)
                         console.log(new_id)
-                        if(ids.includes(new_id[2])){
+                        if(document.getElementById(new_id[2])!=null){
                           document.getElementById(new_id[2]).style.color = "red";
                         }
-                        if(ids.includes(new_id[1])){
+                        if(document.getElementById(new_id[1])!=null){
                           document.getElementById(new_id[1]).style.color = "blue";
                         }
-                        if(ids.includes(new_id[0])){
+                        if(document.getElementById(new_id[0])!=null){
                           document.getElementById(new_id[0]).style.color = "green";
                         }
                       }).catch((error) =>{
