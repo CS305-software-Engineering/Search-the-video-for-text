@@ -55,6 +55,7 @@ export default function HomePage() {
     const uploadHandler = ()=> {
       console.log("uploading" , selectedFile);
       setLoading(true);
+      setID([])
       if(selectedFile == null || subID != 0) 
       {
         console.log("In Else")
@@ -150,6 +151,9 @@ export default function HomePage() {
                         if(v1 == -1 && i==0){
                           return (<div alignContent = "center"><p key = {i}>Captions</p><br></br></div>);
                         }
+                        if(i == 1){
+                          return <p></p>;
+                        }
                         var tmp = v1;
                         while(tmp>=0 && item[tmp]!='\n'){
                         	tmp -=1;
@@ -181,6 +185,20 @@ export default function HomePage() {
                         }
                       }).then((response) => {
                         console.log("idhar aa gaya")
+                        console.log(response.data.result)
+                        var obj = JSON.parse(response.data.result)
+                        var new_id = [obj["time-stamp-1"], obj["time-stamp-2"], obj["time-stamp-3"]]
+                        console.log(ids)
+                        console.log(new_id)
+                        if(ids.includes(new_id[2])){
+                          document.getElementById(new_id[2]).style.color = "red";
+                        }
+                        if(ids.includes(new_id[1])){
+                          document.getElementById(new_id[1]).style.color = "blue";
+                        }
+                        if(ids.includes(new_id[0])){
+                          document.getElementById(new_id[0]).style.color = "green";
+                        }
                       }).catch((error) =>{
                         console.log(error)
                     })
@@ -230,7 +248,7 @@ export default function HomePage() {
                         <source src = {videoID}></source>
                         {/* <track default label = "English" kind = "captions" srclang = "en" src = "https://www.iandevlin.com/html5test/webvtt/upc-video-subtitles-en.vtt"></track> */}
                     </video>
-                    <div id = "updated_t" width = "20%" height = "590" style = {{background:"white", color:"black"}}><textField>{newText}</textField>
+                    <div id = "updated_t" width = "20%" height = "590" style = {{background:"white", color:"black", maxHeight:"590px", overflow:"auto"}}><textField>{newText}</textField>
                     {/* <Button variant = "contained" color = "secondary" onClick = {
                       (event) =>{
                         document.getElementById("00:00:14.000 --> 00:00:16.000").style.color = "red";
@@ -255,7 +273,17 @@ export default function HomePage() {
                     <input type="text" className="form-control" padding = "1%" id="formGroupExampleInput" placeholder = "Search Text" onChange = {handleChange}/>
                 </div>
                 <div style={{padding: "1%", width: "100%",display: "flex", justifyContent:"center",margin: "10px 0px"  }}>
-                    <Button variant="contained" color="primary">
+                    {
+                      loading?
+                      <Loader
+                        type="Puff"
+                        color="#00BFFF"
+                        height={100}
+                        width={100}
+                //timeout={3000} //3 secs
+                        />
+                        :
+                      <Button variant="contained" color="primary">
                         <div
                             onClick={async ()=>{
                             setLoading(true)
@@ -266,6 +294,7 @@ export default function HomePage() {
                             Search
                         </div>
                     </Button>
+                  }
                 </div>
             </div>
         </div>
